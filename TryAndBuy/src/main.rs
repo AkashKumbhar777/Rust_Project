@@ -7,7 +7,6 @@ use crate::controller::auth::authenticate;
 mod controller;
 mod db_connect;
 mod model;
-mod handler;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -35,6 +34,11 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/authenticate").route(web::post().to(authenticate)))
             .service(web::resource("/admin/products").route(web::get().to(controller::admin::get_products)))
             .service(web::resource("/admin/product").route(web::post().to(controller::admin::create_product)))
+            .service(web::resource("/user").route(web::post().to(controller::user_handler::create_user)))
+            .service(web::resource("/user").route(web::get().to(controller::user_handler::get_users)))
+            .service(web::resource("/user/{id}").route(web::get().to(controller::user_handler::get_user_by_id)))
+            .service(web::resource("/user/{id}").route(web::put().to(controller::user_handler::update_user)))
+            .service(web::resource("/user/{id}").route(web::delete().to(controller::user_handler::delete_user)))
             
     })
     .bind("127.0.0.1:3000")?
