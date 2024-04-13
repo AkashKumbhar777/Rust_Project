@@ -1,0 +1,11 @@
+/Users/apple/Rust_Project/TryAndBuy/target/debug/deps/libeither-bc18007246033d37.rmeta: /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/lib.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/serde_untagged.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/serde_untagged_optional.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/iterator.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/into_either.rs
+
+/Users/apple/Rust_Project/TryAndBuy/target/debug/deps/libeither-bc18007246033d37.rlib: /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/lib.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/serde_untagged.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/serde_untagged_optional.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/iterator.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/into_either.rs
+
+/Users/apple/Rust_Project/TryAndBuy/target/debug/deps/either-bc18007246033d37.d: /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/lib.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/serde_untagged.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/serde_untagged_optional.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/iterator.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/into_either.rs
+
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/lib.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/serde_untagged.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/serde_untagged_optional.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/iterator.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/either-1.11.0/src/into_either.rs:
