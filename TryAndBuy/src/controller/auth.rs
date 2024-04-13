@@ -28,7 +28,7 @@ pub async fn request_token(auth_code: &str) -> Result<TokenResponse, Error> {
         .form(&[
             ("grant_type", "authorization_code"),
             ("client_id", "1aaf2355-35a8-428c-9bb6-064079ee6c40"),
-            // ("client_secret", "KON8Q~2TvPA6YrvaroOwMUwd2lXLeky3n2~xIa_V"),
+            ("client_secret", "KON8Q~2TvPA6YrvaroOwMUwd2lXLeky3n2~xIa_V"),
             ("code", auth_code),
             ("redirect_uri", "http://localhost:4200/"),
             ("scope", "https://AKASHPK.onmicrosoft.com/api/Try&Buy.read offline_access openid")
