@@ -1,6 +1,6 @@
 use actix_web::{web, HttpResponse, Responder};
 use sqlx::PgPool;
-use crate::models::model::TryCart; // Assuming the TryCart struct is defined in the same module as Product
+use crate::model::try_cart::TryCart; // Assuming the TryCart struct is defined in the same module as Product
 
 // Create TryCart
 pub async fn create_try_cart(

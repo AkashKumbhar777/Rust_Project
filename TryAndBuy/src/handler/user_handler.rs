@@ -1,6 +1,6 @@
 use actix_web::{web, HttpResponse, Responder};
 use sqlx::PgPool;
-use crate::models::model::User; // Assuming the User struct is defined in the same module as Product
+use crate::model::user::User; // Assuming the User struct is defined in the same module as Product
 
 pub async fn create_user(user_input: web::Json<User>, pool: web::Data<PgPool>) -> impl Responder {
     let new_user_input = user_input.into_inner();
