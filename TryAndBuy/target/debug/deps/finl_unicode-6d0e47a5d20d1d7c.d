@@ -1,0 +1,10 @@
+/Users/apple/Desktop/Connect Tushar/Rust_Project/TryAndBuy/target/debug/deps/libfinl_unicode-6d0e47a5d20d1d7c.rmeta: /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/lib.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/categories.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/grapheme_clusters.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/mod.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/characters.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/grapheme_property.rs
+
+/Users/apple/Desktop/Connect Tushar/Rust_Project/TryAndBuy/target/debug/deps/finl_unicode-6d0e47a5d20d1d7c.d: /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/lib.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/categories.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/grapheme_clusters.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/mod.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/characters.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/grapheme_property.rs
+
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/lib.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/categories.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/grapheme_clusters.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/mod.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/characters.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/finl_unicode-1.2.0/src/data/grapheme_property.rs:
