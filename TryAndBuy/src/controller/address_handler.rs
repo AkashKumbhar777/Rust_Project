@@ -46,7 +46,11 @@ pub async fn get_addresses_by_user_id(
     {
         Ok(Some(address)) => HttpResponse::Ok().json(address),
         Ok(None) => HttpResponse::NotFound().finish(),
-        Err(_) => HttpResponse::InternalServerError().finish(),
+        Err(e) => {
+            eprintln!("Error fetching address: {:?}", e);
+            HttpResponse::InternalServerError().finish()
+        }
+        ,
     }
 }
 
