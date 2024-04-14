@@ -143,7 +143,11 @@ pub async fn get_all_buycarts(pool: web::Data<PgPool>) -> impl Responder {
         .await
     {
         Ok(buy_carts) => HttpResponse::Ok().json(buy_carts),
-        Err(_) => HttpResponse::InternalServerError().finish(),
+        Err(e) => 
+        {
+            println!("Error: {:?}",e ) ;
+            HttpResponse::InternalServerError().finish()},
+
     }
 }
 
@@ -163,7 +167,11 @@ pub async fn get_buycart_by_userid(
         .await
     {
         Ok(buy_carts) => HttpResponse::Ok().json(buy_carts),
-        Err(_) => HttpResponse::InternalServerError().finish(),
+        Err(e) => 
+        {
+            println!("Error: {:?}",e ) ;
+            HttpResponse::InternalServerError().finish()},
+
     }
 }
 
@@ -190,7 +198,12 @@ pub async fn update_buycart(
 
     match result {
         Ok(_) => HttpResponse::Ok().json(updated_buycart_input),
-        Err(_) => HttpResponse::InternalServerError().finish(),
+        
+        Err(e) => 
+        {
+            println!("Error: {:?}",e ) ;
+            HttpResponse::InternalServerError().finish()}
+
     }
 }
 

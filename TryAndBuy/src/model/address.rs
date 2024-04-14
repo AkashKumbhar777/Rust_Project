@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 use sqlx::prelude::FromRow;
 
+
 #[derive(Debug, Serialize, Deserialize,FromRow)]
 pub struct Address {
     pub address_id: Option<i32>,
@@ -9,6 +10,6 @@ pub struct Address {
     pub address_line2: Option<String>,
     pub city: String,
     pub add_state: String,
-    pub postal_code: i32,
+    pub postal_code: f64,
     pub country: String,
 }
