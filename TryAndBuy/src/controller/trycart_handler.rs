@@ -4,17 +4,18 @@ use crate::model::try_cart::TryCart; // Assuming the TryCart struct is defined i
 
 // Create TryCart
 pub async fn create_trycart(
+    user_id: web::Path<i32>,
     try_cart_input: web::Json<TryCart>,
     pool: web::Data<PgPool>
 ) -> impl Responder {
     let new_try_cart_input = try_cart_input.into_inner();
-
+    let user_id = user_id.into_inner(); 
     let result = sqlx::query(
-        "INSERT INTO try_cart (user_id, product_id, added_at)
-         VALUES ($1, $2, $3)")
-        .bind(&new_try_cart_input.user_id)
-        .bind(&new_try_cart_input.product_id)
-        .bind(&new_try_cart_input.added_at)
+        "INSERT INTO try_cart (product_id, added_at)
+         VALUES ($1, $2)")
+         .bind(&new_try_cart_input.product_id)
+         .bind(&new_try_cart_input.added_at)
+         .bind(&user_id)
         .execute(pool.as_ref())
         .await;
 
@@ -25,9 +26,10 @@ pub async fn create_trycart(
 }
 
 pub async fn get_all_trycarts(pool: web::Data<PgPool>) -> impl Responder {
+    println!("   Inside get_all_trycarts");
+
     match sqlx::query_as::<_, TryCart>(
-        "SELECT try_cart_id, user_id, product_id, added_at
-         FROM try_cart")
+        "SELECT try_cart_id, user_id ,product_id,added_at FROM public.try_cart")
         .fetch_all(pool.as_ref())
         .await
     {
@@ -35,6 +37,8 @@ pub async fn get_all_trycarts(pool: web::Data<PgPool>) -> impl Responder {
         Err(_) => HttpResponse::InternalServerError().finish(),
     }
 }
+
+
 
 
 // Get TryCarts by User ID
