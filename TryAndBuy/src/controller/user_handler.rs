@@ -70,6 +70,7 @@ pub async fn update_user(
 
     let user_id = user_id.into_inner();
     let updated_user_input = user_input.into_inner();
+    println!("{:?}", updated_user_input);
 
     let result = sqlx::query(
         "UPDATE user_table SET

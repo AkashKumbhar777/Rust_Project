@@ -3,7 +3,7 @@ use sqlx::prelude::FromRow;
 
 #[derive(Debug, Serialize, Deserialize,FromRow)]
 pub struct Order {
-    pub order_id: Option<i32>,
+    pub order_id: i32,
     pub user_id: i32,
     pub product_id: i32,
     pub order_status: String,
