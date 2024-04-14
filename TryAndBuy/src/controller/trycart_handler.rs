@@ -4,18 +4,16 @@ use crate::model::try_cart::TryCart; // Assuming the TryCart struct is defined i
 
 // Create TryCart
 pub async fn create_trycart(
-    user_id: web::Path<i32>,
     try_cart_input: web::Json<TryCart>,
     pool: web::Data<PgPool>
 ) -> impl Responder {
     let new_try_cart_input = try_cart_input.into_inner();
-    let user_id = user_id.into_inner(); 
     let result = sqlx::query(
-        "INSERT INTO try_cart (product_id, added_at)
-         VALUES ($1, $2)")
+        "INSERT INTO try_cart (product_id, added_at,user_id)
+         VALUES ($1, $2,$3)")
          .bind(&new_try_cart_input.product_id)
          .bind(&new_try_cart_input.added_at)
-         .bind(&user_id)
+         .bind(&new_try_cart_input.user_id)
         .execute(pool.as_ref())
         .await;
 
