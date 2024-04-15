@@ -10,18 +10,18 @@ export class ProductsService{
     productSelected=new EventEmitter<Products>();
     singleProduct:Products;
     
-    getHeaders(){
-        let userStore = localStorage.getItem('admin')
-        let accessToken = userStore && JSON.parse(userStore).accessToken
+    // getHeaders(){
+    //     let userStore = localStorage.getItem('admin')
+    //     let accessToken = userStore && JSON.parse(userStore).accessToken
     
-        let httpHeaders: HttpHeaders = new HttpHeaders({
-          'Content-Type': 'application/json', 
-          'Authorization': `Bearer ${accessToken}`
-        })
+    //     let httpHeaders: HttpHeaders = new HttpHeaders({
+    //       'Content-Type': 'application/json', 
+    //       'Authorization': `Bearer ${accessToken}`
+    //     })
     
-        return httpHeaders
+    //     return httpHeaders
     
-      }
+    //   }
     
       errorHandler(error: HttpErrorResponse){
         console.log(error);  
@@ -33,20 +33,17 @@ export class ProductsService{
 
     //for create new product
     createProduct(newProduct:Products) {
-    let Headers = this.getHeaders()
     return this.http.post<Products>(`${this.url}admin/product`, newProduct)
     .pipe(catchError(this.errorHandler))
       }
 
       getProduct(productId: number){
-        let Headers = this.getHeaders()
-        return this.http.get<Products>(`${this.url}admin/product/${productId}`, { headers: Headers })
+        return this.http.get<Products>(`${this.url}admin/product/${productId}`)
         .pipe(catchError(this.errorHandler))
       }
     
       getProducts(){
-        let Headers = this.getHeaders()
-        return this.http.get<Products[]>(`${this.url}admin/products`, { headers: Headers })
+        return this.http.get<Products[]>(`${this.url}admin/products`)
         .pipe(catchError(this.errorHandler))
       }
 
