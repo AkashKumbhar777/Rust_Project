@@ -43,6 +43,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/user/{id}").route(web::get().to(controller::user_handler::get_user_by_id)))
             .service(web::resource("/user/update/{id}").route(web::put().to(controller::user_handler::update_user)))
             .service(web::resource("/user/delete/{id}").route(web::delete().to(controller::user_handler::delete_user)))
+            .service(web::resource("/userbyemail/{email}").route(web::get().to(controller::user_handler::get_user_by_email)))
 
             .service(web::resource("/trycart").route(web::post().to(controller::trycart_handler::create_trycart)))//trycart handler
             .service(web::resource("/trycarts").route(web::get().to(controller::trycart_handler::get_all_trycarts))) 
@@ -67,6 +68,8 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("orders/{uid}").route(web::get().to(controller::order_handler::get_orders_by_userid)))
             .service(web::resource("order/update/{id}").route(web::put().to(controller::order_handler::update_order)))
             .service(web::resource("order/delete/{id}").route(web::delete().to(controller::order_handler::delete_order)))
+
+
     })
     .bind("127.0.0.1:3000")?
     .run()
