@@ -1,0 +1,39 @@
+<div class="top-container">
+    <div class="main">  
+		<input type="checkbox" id="chk" aria-hidden="true"> 
+		<div> 
+			<form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+				<label for="chk" aria-hidden="true">User Sign up</label>
+				<input type="text" name="username" placeholder="User Name" formControlName="username">
+				<small class="signup-msg" >
+					Username</small>
+
+				<input type="email" name="email" placeholder="Email" formControlName="email">
+				<small class="signup-msg">
+					Email</small>
+
+				<input type="password" name="password" placeholder="Password" formControlName="password">
+				<small class="signup-msg">
+					Password</small>
+
+				<button type="submit">Sign up</button>
+				<small class="signup-msg">{{ signupMsg }}</small>
+			</form>
+		</div>
+
+		<div class="login">
+			<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+				<label for="chk" aria-hidden="true">User Login</label>
+				<input type="email" name="email" placeholder="Email" formControlName="email">
+				<input type="password" name="password" placeholder="Password" formControlName="password">
+				<button type="submit">Login</button>
+			</form>
+			<div>
+				<a href=""><small class="login-msg">{{ signupMsg }}</small></a><br>
+			</div>
+			<div>
+				<a routerLink="/otp"><small class="login-msg">Forget password</small></a>
+			</div>
+		</div>
+	</div>
+</div>

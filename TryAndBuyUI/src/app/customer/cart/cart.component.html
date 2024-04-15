@@ -1,0 +1,53 @@
+<div id="w">
+    <header id="title">
+      <div class="heading-img">
+        <h1>Cart</h1>
+      </div>
+    </header>
+    <div id="page">
+      <table id="cart">
+        <thead>
+          <tr>
+            <th class="first">Image</th>
+            <th class="third">Product</th>
+            <th class="second">Qty</th>
+            <th class="fourth">Price</th>
+            <th class="fifth">&nbsp;</th>
+            
+          </tr>
+        </thead>
+        <tbody>
+          <!-- shopping cart contents -->
+          <tr class="productitm" *ngFor="let item of selectedProducts" >
+            <!-- http://www.inkydeals.com/deal/ginormous-bundle/ -->
+            <td><img src="{{item.image}}" class="thumb"></td>
+            <td>{{item.title}}</td>
+            <td>{{item.quantity}}</td>
+            <td>{{item.price}}</td>
+            <td ><span class="remove" (click)="removeFromCart(item._id)"><img src="https://i.imgur.com/h1ldGRr.png" alt="X"></span></td>
+            
+          </tr> 
+        <!-- tax + subtotal -->
+          <tr class="extracosts">
+            <td class="light">Shipping &amp; Tax</td>
+            <td colspan="2" class="light"></td>
+            <td style="color: wheat;">{{this.priceSummary.tax}} + {{this.priceSummary.delivery}}</td>
+            <td>&nbsp;</td>
+           
+          </tr>
+          <tr class="totalprice">
+            <td class="light">Total:</td>
+            <td colspan="2">&nbsp;</td>
+            <td colspan="2"><span class="thick">{{this.priceSummary.total}}</span></td>
+          </tr>
+          
+          <!-- checkout btn -->
+          <tr class="checkoutrow">
+            <td colspan="5" ><button id="submitbtn" class="checkout" (click)="checkoutOrder()">Checkout Now!</button></td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </div>
+
