@@ -14,13 +14,13 @@
             <ul *ngSwitchCase="'default'">
                 <li routerLink="/">Shop</li>
                 <li routerLink="/cart" class="cart-logo"></li>
-                <li routerLink="/orders">Orders</li>
+                <!-- <li routerLink="/orders">Orders</li>
                 <li routerLink="/products">Products</li>
                 <li routerLink="/products/add">Add</li>
-                <li (click)="onCustomerLogout()">Logout</li> 
-                <!-- <li routerLink="/seller-signup">Seller</li>
-                <li routerLink="/customer-signup">Customer</li> -->
-                <li (click)="signInOrSignUp()">Login</li>
+                <li (click)="onCustomerLogout()">Logout</li>  -->
+                <li routerLink="/seller-signup">Seller</li>
+                <li routerLink="/customer-signup">Customer</li>
+                <!-- <li (click)="signInOrSignUp()">Login</li> -->
             </ul>
 
             <ul *ngSwitchCase="'customer'">
@@ -32,7 +32,7 @@
 
             <ul *ngSwitchCase="'seller'">
                 <li routerLink="/products">Products</li>
-                <li routerLink="/products/upload">Add</li>
+                <li routerLink="/products/add">Add</li>
                 <li (click)="onSellerLogout()">Logout</li> 
             </ul>
         </div>

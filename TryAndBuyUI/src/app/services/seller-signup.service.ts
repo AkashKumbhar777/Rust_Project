@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { EventEmitter, Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, catchError, throwError } from "rxjs";
-import { Signup } from "../models/dataTypes";
+import { Login } from "../models/dataTypes";
 
 @Injectable({
     providedIn: 'root'
@@ -24,14 +24,14 @@ export class SellerSignupService{
         return throwError(error);
       }
 
-    signupUser(userData:Signup){
-        userData.isAdmin=true;
+    signupUser(userData:Login){
+        userData.user_role='admin';
         let userDataAdmin=userData;
-        return this.http.post<Signup>(`${this.url}auth/register`,userDataAdmin)
+        return this.http.post<Login>(`${this.url}auth/register`,userDataAdmin)
         .pipe(catchError(this.errorHandler))
     }
 
-    loginUser(userData:Signup){
+    loginUser(userData:Login){
         // this.http.post<Signup>(`${this.url}auth/login`, userData)
         // .pipe(catchError(this.errorHandler))
         // .subscribe((res)=>{
@@ -50,7 +50,7 @@ export class SellerSignupService{
         //     }
         // })
 
-        if(userData.email==='admin@gmail.com' && userData.password==='admin'){
+        if(userData.username==='admin@gmail.com' && userData.password==='admin'){
             localStorage.setItem('admin',JSON.stringify({_id:1,accessToken:'Admin'}))
                     this.router.navigate(['/products'])
                     console.log(localStorage);
