@@ -49,7 +49,10 @@ export class CustomerSignupService{
         //         this.signupMsg.emit(true)
         //     }
         // })
-
+        const res= this.http.get<Login>(`${this.url}user`)
+        .pipe(catchError(this.errorHandler))
+        
+        console.log(res);
         if(userData.username==='cst@gmail.com' && userData.password==='cst'){
             localStorage.setItem('customer',JSON.stringify({_id:1,accessToken:'A'}))
                     this.router.navigate(['/'])
