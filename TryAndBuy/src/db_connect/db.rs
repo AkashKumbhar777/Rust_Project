@@ -7,7 +7,7 @@ pub async fn get_pool() -> Result<PgPool, Error> {
     print!("inside db pool");
     let pool = PgPoolOptions::new()
         .max_connections(10)
-        .connect("postgres://postgres:Akash777*@localhost:5432/TryAndBuy2")
+        .connect("postgres://postgres:shreya@localhost:5432/TryAndBuy2")
         .await?;
 
     Ok(pool)

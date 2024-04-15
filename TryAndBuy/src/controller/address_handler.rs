@@ -29,6 +29,20 @@ pub async fn create_address(
 }
 
 
+//get all addresses
+pub async fn get_all_addresses(pool: web::Data<PgPool>) -> impl Responder {
+    match sqlx::query_as::<_,Address>("SELECT * FROM address")
+    .fetch_all(pool.as_ref())
+    .await
+    {
+        Ok(address) => HttpResponse::Ok().json(address),
+        Err(err)=>{
+            println!("Error: {:?}",err) ;
+            HttpResponse::InternalServerError().finish()
+        }
+    }
+
+}
 // Get all Addresses by User ID
 pub async fn get_addresses_by_user_id(
     user_id: web::Path<i32>,

@@ -1,0 +1,41 @@
+<div class="container">
+    <nav class="nav">
+        <h1 class="header" routerLink="/">Shopping Website</h1>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Search for Products">
+            <button>Search</button>
+            <ul class="suggested-result">
+                <!-- Suggestions will be dynamically populated here -->
+            </ul>
+        </div>
+
+        <div [ngSwitch]="menuType" class="menu">
+            <ul *ngSwitchCase="'default'">
+                <li routerLink="/">Shop</li>
+                <li routerLink="/cart" class="cart-logo"></li>
+                <!-- <li routerLink="/orders">Orders</li>
+                <li routerLink="/products">Products</li>
+                <li routerLink="/products/add">Add</li>
+                <li (click)="onCustomerLogout()">Logout</li>  -->
+                <li routerLink="/seller-signup">Seller</li>
+                <li routerLink="/customer-signup">Customer</li>
+                <!-- <li (click)="signInOrSignUp()">Login</li> -->
+            </ul>
+
+            <ul *ngSwitchCase="'customer'">
+                <li routerLink="/">Shop</li>
+                <li routerLink="/cart" class="cart-logo"></li>
+                <li routerLink="/orders">Orders</li>
+                <li routerLink="/user">Profile</li>
+                <li (click)="onCustomerLogout()">Logout</li> 
+            </ul>
+
+            <ul *ngSwitchCase="'seller'">
+                <li routerLink="/products">Products</li>
+                <li routerLink="/products/add">Add</li>
+                <li (click)="onSellerLogout()">Logout</li> 
+            </ul>
+        </div>
+    </nav>
+</div>

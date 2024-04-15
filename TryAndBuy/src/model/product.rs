@@ -9,7 +9,7 @@ pub struct Product {
     pub product_description: Option<String>,
     pub price: f64,
     pub image_url: Option<String>,
-    pub specifications: Option<serde_json::Value>,
+    pub specifications: Option<String>,
     pub created_at: String,
     pub updated_at: String,
 }

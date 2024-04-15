@@ -18,6 +18,9 @@ dotenv = "0.15.0" # To read .env files for environment variables
 serde_json ="1.0"
 bigdecimal = "0.4.3"
 chrono = "0.4.37"
+<<<<<<< HEAD
 jsonwebtoken = "9.3.0"
 rust-crypto = "0.2.36"
 base64 = "0.22.0"
+=======
+>>>>>>> f53d1de8231e7042a319f829b6018b1c0ac06524

@@ -59,6 +59,26 @@ pub async fn get_user_by_id(
     }
 }
 
+pub async fn get_user_by_email(
+    email: web::Path<String>, // Assuming email is a String type
+    pool: web::Data<PgPool>
+) -> impl Responder {
+    let email = email.into_inner();
+
+    match sqlx::query_as::<_, User>(
+        "SELECT user_id, login_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at
+         FROM user_table
+         WHERE email = $1")
+        .bind(&email)
+        .fetch_optional(pool.as_ref())
+        .await
+    {
+        Ok(Some(user)) => HttpResponse::Ok().json(user),
+        Ok(None) => HttpResponse::NotFound().finish(),
+        Err(_) => HttpResponse::InternalServerError().finish(),
+    }
+}
+
 
 
 pub async fn update_user(

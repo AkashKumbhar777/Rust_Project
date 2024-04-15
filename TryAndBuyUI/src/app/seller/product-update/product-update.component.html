@@ -1,0 +1,84 @@
+<h1>Update Product</h1>
+
+<!-- Create Form -->
+<form id="form" [formGroup]="productUpdateForm" (ngSubmit)="updateProduct()">
+  <!-- Details -->
+  <div class="form-control">
+    <label>Name</label>
+    <input
+      formControlName="product_name"
+      type="text"
+      name="title"
+      placeholder="Enter Product Name"
+    />
+  </div>
+
+  <div class="form-control">
+    <label>Price</label>
+    <input
+      formControlName="price"
+      type="number"
+      name="price"
+      placeholder="Enter Product Price"
+    />
+  </div>
+
+  <div class="form-control">
+    <label>specifications</label>
+    <input
+      formControlName="specifications"
+      type="text"
+      name="specifications"
+      placeholder="Enter Product Category"
+    />
+  </div>
+
+  <div class="form-control">
+    <label>Image URL</label>
+    <input
+      formControlName="image_url"
+      type="text"
+      name="image_url"
+      placeholder="Enter Image Url"
+    />
+  </div>
+
+  <div class="form-control">
+    <label for="comment">Description</label>
+    <textarea
+      formControlName="product_description"
+      name="text"
+      id=""
+      cols="30"
+      rows="8"
+      name="product_description"
+      placeholder="Enter Product Description"
+    ></textarea>
+  </div>
+
+  <div class="form-control">
+    <label>updated_at</label>
+    <input
+      formControlName="updated_at"
+      type="text"
+      name="updated_at"
+      placeholder="Enter Product updated_at"
+    />
+  </div>
+
+  <div class="form-control" *ngIf="!isDisabled">
+    <label>created_at</label>
+    <input
+      formControlName="created_at"
+      type="text"
+      name="created_at"
+      placeholder="Enter Product created_at"
+      [disabled]="true" 
+    />
+</div>
+
+  <p class="err-msg"> productMsg </p>
+
+  <button class="form-button" >Submit</button>
+</form>
+
