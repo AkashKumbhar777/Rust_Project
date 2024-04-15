@@ -19,9 +19,9 @@ const routes: Routes = [
     {path: 'orders', component: OrdersComponent},
     {path: 'payment', component: PaymentComponent}
   ]},
-  {path:'/user',children:[
-    {path:'/:_id',component:UpdateProfileComponent},
-    {path:'/address/:_id',component:AddressComponent}
+  {path:'user',children:[
+    {path:':_id',component:UpdateProfileComponent},
+    {path:'address/:_id',component:AddressComponent}
   ]}
 ];
 
