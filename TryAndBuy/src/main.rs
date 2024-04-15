@@ -24,7 +24,7 @@ async fn main() -> std::io::Result<()> {
         let cors_headers_clone = cors_headers.clone();
         let cors = Cors::default()
             .allow_any_origin()
-            .allowed_methods(vec!["GET", "POST"])
+            .allowed_methods(vec!["GET", "POST", "PUT","DELETE"])
             .allowed_headers(cors_headers_clone)
             .max_age(3600);
 
