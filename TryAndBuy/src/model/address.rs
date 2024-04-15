@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 use sqlx::prelude::FromRow;
 
+
 #[derive(Debug, Serialize, Deserialize,FromRow)]
 pub struct Address {
     pub address_id: Option<i32>,
