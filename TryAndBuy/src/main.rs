@@ -54,6 +54,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/buycart/delete/{uid}/{id}").route(web::delete().to(controller::buycart_handler::delete_buycart)))
             
             .service(web::resource("/address").route(web::post().to(controller::address_handler::create_address)))//address handle
+            .service(web::resource("/addresses").route(web::get().to(controller::address_handler::get_all_addresses)))
             .service(web::resource("/address/{uid}").route(web::get().to(controller::address_handler::get_addresses_by_user_id)))
             .service(web::resource("/address/update/{id}").route(web::put().to(controller::address_handler::update_address)))
             .service(web::resource("/address/delete/{id}").route(web::delete().to(controller::address_handler::delete_address)))

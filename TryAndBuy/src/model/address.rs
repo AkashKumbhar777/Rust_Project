@@ -9,6 +9,6 @@ pub struct Address {
     pub address_line2: Option<String>,
     pub city: String,
     pub add_state: String,
-    pub postal_code: i32,
+    pub postal_code: f64,
     pub country: String,
 }
