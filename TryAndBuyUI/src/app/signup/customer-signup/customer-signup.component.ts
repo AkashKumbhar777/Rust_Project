@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomerSignupService } from '../../services/customer-signup.service';
-import { Signup } from '../../models/dataTypes';
+import { Login } from '../../models/dataTypes';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -22,7 +22,7 @@ export class CustomerSignupComponent implements OnInit {
   })
 
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   })
 
@@ -32,15 +32,15 @@ export class CustomerSignupComponent implements OnInit {
 
   onSignup() {
     if (this.signupForm.valid) {
-      // Perform signup action
+      // Perform signup action        
     } else {
       this.signupMsg = 'Please fill in all fields correctly.';
     }
   }
 
   onLogin() {
-    let userData = this.loginForm.value as Signup
-    this.signupService.loginUser(userData)
+    let userData = this.loginForm.value as Login
+    this.signupService.loginUser(userData);
     
     this.signupService.signupMsg.subscribe((res)=>{
       if(res){

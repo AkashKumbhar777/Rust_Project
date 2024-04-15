@@ -28,8 +28,9 @@ export class ProductAddComponent {
     this.productService.createProduct(productData).subscribe(
       (res: any) => {
         console.log(res);
-        if (res && res._id) {
+        if (res) {
           this.productMsg = 'Product is successfully added';
+          this.router.navigate(['/products']);
         }
         this.getTimeout();
       },

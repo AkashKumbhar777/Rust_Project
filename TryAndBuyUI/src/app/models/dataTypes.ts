@@ -1,10 +1,9 @@
-export interface Signup{
-    _id: string,
-    username: string,
-    email: string
-    password: string,
-    accessToken: string | undefined,
-    isAdmin: boolean | undefined
+export interface Login{
+    login_id:number,
+    username:string, 
+    password:string, 
+    user_role: 'user' | 'admin',
+    last_logged_in:Date
 }
 
 // export interface Product{

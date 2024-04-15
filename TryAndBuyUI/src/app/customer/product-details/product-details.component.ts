@@ -12,7 +12,7 @@ import { CartService } from '../../services/cart.service';
 export class ProductDetailsComponent implements OnInit{
   public removeCartLink:boolean=false;
   public productQantity:number=1;
-
+  id:number;
   public productDetails: Products | undefined;
   prdt:Products
   constructor(private productSrv:ProductsService,
@@ -21,10 +21,19 @@ export class ProductDetailsComponent implements OnInit{
     ){}
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      const id = params['product_id']; // Assuming the parameter name is 'id'
-      // this.productDetails=this.productSrv.getOneProduct(id);
+      this.id = parseInt(params['_id']); // Assuming the parameter name is 'id'
+      this.getProductDetails();
     });
   }
+getProductDetails(){
+  this.productSrv.getProduct(this.id).subscribe((res)=>{
+    if(res){
+      this.productDetails=res;
+    }
+  })
+
+}
+
   handleQuantity(vari:string){
     if(this.productQantity<20 && vari==='plus'){
       this.productQantity +=1;

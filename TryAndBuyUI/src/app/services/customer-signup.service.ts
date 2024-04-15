@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Signup } from "../models/dataTypes";
+import { Login } from "../models/dataTypes";
 import { throwError,catchError, BehaviorSubject } from "rxjs";
 import { EventEmitter, Injectable, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 export class CustomerSignupService{
     public url='';
 
-    user:Signup;
+    user:Login;
     public signupMsg = new EventEmitter<boolean>(false);
     public isCustomerLoggedIn = new BehaviorSubject<boolean>(false);
     constructor(
@@ -22,14 +22,14 @@ export class CustomerSignupService{
         // console.log(error.error.message);  
         return throwError(error);
       }
-    signupUser(userData: Signup){
-        return this.http.post<Signup>(`${this.url}auth/register`, userData)
+    signupUser(userData: Login){
+        return this.http.post<Login>(`${this.url}auth/register`, userData)
         .pipe(catchError(this.errorHandler))
       }
 
-    loginUser(userData:Signup){
+    loginUser(userData:Login){
         console.log("inside login user")
-        console.log(userData.username,userData.email)
+        console.log(userData.username,userData.password)
         // this.http.post<Signup>(`${this.url}auth/login`, userData)
         // .pipe(catchError(this.errorHandler))
         // .subscribe((res)=>{
@@ -50,7 +50,7 @@ export class CustomerSignupService{
         //     }
         // })
 
-        if(userData.email==='cst@gmail.com' && userData.password==='cst'){
+        if(userData.username==='cst@gmail.com' && userData.password==='cst'){
             localStorage.setItem('customer',JSON.stringify({_id:1,accessToken:'A'}))
                     this.router.navigate(['/'])
                     console.log(localStorage)
@@ -62,9 +62,9 @@ export class CustomerSignupService{
 
     //get user by userid
     getUserById(userId:string) {
-      this.http.get<Signup>(`url/${userId}`)
+      this.http.get<Login>(`url/${userId}`)
         .subscribe(
-          (user: Signup) => {
+          (user: Login) => {
             this.user = user;
             console.log('User details:', this.user);
           },
@@ -76,10 +76,10 @@ export class CustomerSignupService{
     }
 
     //update user by id
-    updateUser(userIdToUpdate:string,updatedUser:Signup) {
-      this.http.put<Signup>(`http://your-api-url.com/update_user/${userIdToUpdate}`, updatedUser)
+    updateUser(userIdToUpdate:string,updatedUser:Login) {
+      this.http.put<Login>(`http://your-api-url.com/update_user/${userIdToUpdate}`, updatedUser)
         .subscribe(
-          (updatedUser: Signup) => {
+          (updatedUser: Login) => {
             console.log('User updated successfully:', updatedUser);
             // Optionally, you can perform some action after successful update
           },

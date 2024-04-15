@@ -3,8 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SellerSignupService } from '../../services/seller-signup.service';
 import { HttpClient } from '@angular/common/http';
-import { Signup } from '../../models/dataTypes';
-
+import{Login} from '../../models/dataTypes'
 @Component({
   selector: 'app-seller-signup',
   templateUrl: './seller-signup.component.html',
@@ -21,7 +20,7 @@ export class SellerSignupComponent implements OnInit{
   })
 
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   })
   ngOnInit(): void {
@@ -36,7 +35,7 @@ export class SellerSignupComponent implements OnInit{
     }
   }
   onLogin(){
-    let userData = this.loginForm.value as Signup
+    let userData = this.loginForm.value as Login
     this.signupService.loginUser(userData)
     
     this.signupService.signupMsg.subscribe((res)=>{
