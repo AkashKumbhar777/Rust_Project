@@ -6,6 +6,8 @@ import { SearchComponent } from './search/search.component';
 import { CartComponent } from './cart/cart.component';
 import { OrdersComponent } from './orders/orders.component';
 import { PaymentComponent } from './payment/payment.component';
+import { UpdateProfileComponent } from './profile/update-profile/update-profile.component';
+import { AddressComponent } from './profile/address/address.component';
 
 
 const routes: Routes = [
@@ -16,6 +18,10 @@ const routes: Routes = [
     {path: 'cart', component: CartComponent},
     {path: 'orders', component: OrdersComponent},
     {path: 'payment', component: PaymentComponent}
+  ]},
+  {path:'/user',children:[
+    {path:'/:_id',component:UpdateProfileComponent},
+    {path:'/address/:_id',component:AddressComponent}
   ]}
 ];
 
