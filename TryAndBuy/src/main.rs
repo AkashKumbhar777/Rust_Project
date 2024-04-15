@@ -34,6 +34,9 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/authenticate").route(web::post().to(authenticate)))
             .service(web::resource("/admin/products").route(web::get().to(controller::admin::get_products)))
             .service(web::resource("/admin/product").route(web::post().to(controller::admin::create_product)))
+            .service(web::resource("/admin/product/{product_id}").route(web::get().to(controller::admin::get_product_by_product_id)))
+            .service(web::resource("/admin/products/{product_id}").route(web::put().to(controller::admin::update_product)))
+            .service(web::resource("/admin/productss/{product_id}").route(web::delete().to(controller::admin::delete_product)))
 
             .service(web::resource("/user").route(web::post().to(controller::user_handler::create_user))) //user handler
             .service(web::resource("/users").route(web::get().to(controller::user_handler::get_users)))
