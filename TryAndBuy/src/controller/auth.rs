@@ -27,6 +27,7 @@ struct TokenClaims {
     extension_created_at: String,
 }
 
+//Authentication main method for login and Signup
 pub async fn authenticate(auth_code: web::Json<AuthCode>) -> Result<HttpResponse, Error> {
     let auth_code = auth_code.into_inner().code;
     println!("Received auth code: {}", auth_code);
@@ -37,6 +38,7 @@ pub async fn authenticate(auth_code: web::Json<AuthCode>) -> Result<HttpResponse
     Ok(HttpResponse::Ok().json(token))
 }
 
+//Getting JSON Token by using this method
 pub async fn request_token(auth_code: &str) -> Result<TokenResponse, Error> {
     let client = Client::new();
     let response = client.post("https://AKASHPK.b2clogin.com/AKASHPK.onmicrosoft.com/B2C_1_SignUpSignIn/oauth2/v2.0/token")
@@ -66,14 +68,14 @@ pub async fn request_token(auth_code: &str) -> Result<TokenResponse, Error> {
     }
 }
 
+//Decoding the Json token and fetching User Information
 pub async fn fetch_user_info(access_token: &str) -> Result<User, Error> {
-    // Decode the access token
+    // Decoding the access token
     let parts: Vec<&str> = access_token.split('.').collect();
     if parts.len() != 3 {
         return Err(InternalError::new("Invalid access token format".to_string(), actix_web::http::StatusCode::BAD_REQUEST).into());
     }
 
-    // Ensure the length of the base64-encoded string is a multiple of 4
     let mut padded_payload = parts[1].to_owned();
     let padding_needed = 4 - (padded_payload.len() % 4);
     for _ in 0..padding_needed {
@@ -87,7 +89,7 @@ pub async fn fetch_user_info(access_token: &str) -> Result<User, Error> {
     let payload_str = String::from_utf8_lossy(&payload_bytes);
     print!("After Decoding");
     print!("{:?}",payload_str);
-    // Parse the payload as JSON
+    // Parsing the payload as JSON
     let token_claims: TokenClaims = serde_json::from_str(&payload_str).map_err(|e| InternalError::new(format!("Failed to parse payload: {}", e), actix_web::http::StatusCode::INTERNAL_SERVER_ERROR))?;
 
     // Extract user information from the decoded token claims
@@ -98,6 +100,7 @@ pub async fn fetch_user_info(access_token: &str) -> Result<User, Error> {
         email: token_claims.emails,
         phone: token_claims.extension_phone,
         profile_picture: None,
+        user_role: None,
         created_at: token_claims.extension_created_at,
         updated_at: None,
     };
@@ -106,13 +109,35 @@ pub async fn fetch_user_info(access_token: &str) -> Result<User, Error> {
 }
 
 
-
-pub async fn save_user_info_to_database(user_info: &User) -> Result<(), Error> {
+//After Decoding the token UserInfo Saved in database if new user else while logIn user exist and return User.
+pub async fn save_user_info_to_database(user_info: &User) -> Result<User, Error> {
     let pool = get_pool().await.expect("failed to get pool");
+    let emailid = &user_info.email[0];
+    
+    // Check if user already exists in the database by email
+    let existing_user = sqlx::query_as::<_, User>(
+        "SELECT user_id, first_name, last_name, email, phone, profile_picture,user_role, created_at, updated_at
+         FROM user_table
+         WHERE $1 = ANY(email)")
+       .bind(emailid) 
+       .fetch_optional(&pool)
+       .await
+       .map_err(|e| InternalError::new(format!("Failed to check existing user: {}", e), actix_web::http::StatusCode::INTERNAL_SERVER_ERROR))?;
 
-    match sqlx::query!(
+    let user: Result<User, Error> = match existing_user {
+        Some(user) => Ok(user),
+        None => Err(InternalError::new("User not found", actix_web::http::StatusCode::NOT_FOUND).into()),
+    };
+
+    if let Ok(user) = user {
+        print!("{:?}", user);
+        return Ok(user);
+    }
+
+    // If user does not exist, insert new user into the database
+    let inserted_user = sqlx::query!(
         "INSERT INTO user_table (first_name, last_name, email, phone, profile_picture, created_at, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7)",
+         VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
         user_info.first_name,
         user_info.last_name,
         &user_info.email,
@@ -121,10 +146,22 @@ pub async fn save_user_info_to_database(user_info: &User) -> Result<(), Error> {
         user_info.created_at,
         user_info.updated_at,
     )
-    .execute(&pool)
+    .fetch_one(&pool)
     .await
-    {
-        Ok(_) => Ok(()),
-        Err(err) => Err(InternalError::new(err, actix_web::http::StatusCode::INTERNAL_SERVER_ERROR).into()),
-    }
+    .map_err(|e| InternalError::new(format!("Failed to insert user: {}", e), actix_web::http::StatusCode::INTERNAL_SERVER_ERROR))?;
+
+    let user = User {
+        user_id: Some(inserted_user.user_id),
+        first_name: inserted_user.first_name.unwrap_or_default(),
+        last_name: inserted_user.last_name.unwrap_or_default(),
+        email: inserted_user.email.unwrap_or_default(),
+        phone: inserted_user.phone.unwrap_or_default(),
+        profile_picture: inserted_user.profile_picture,
+        user_role: inserted_user.user_role,
+        created_at: inserted_user.created_at.unwrap_or_default(),
+        updated_at: inserted_user.updated_at,
+    };
+    
+    Ok(user)
 }
+
