@@ -38,7 +38,6 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/admin/products/{product_id}").route(web::put().to(controller::admin::update_product)))
             .service(web::resource("/admin/productss/{product_id}").route(web::delete().to(controller::admin::delete_product)))
 
-            .service(web::resource("/user").route(web::post().to(controller::user_handler::create_user))) //user handler
             .service(web::resource("/users").route(web::get().to(controller::user_handler::get_users)))
             .service(web::resource("/user/{id}").route(web::get().to(controller::user_handler::get_user_by_id)))
             .service(web::resource("/user/update/{id}").route(web::put().to(controller::user_handler::update_user)))

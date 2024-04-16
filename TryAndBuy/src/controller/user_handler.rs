@@ -1,28 +1,8 @@
 use actix_web::{web, HttpResponse, Responder};
 use sqlx::PgPool;
-use crate::model::user::User; // Assuming the User struct is defined in the same module as Product
+use crate::model::user::User; 
 
-pub async fn create_user(user_input: web::Json<User>, pool: web::Data<PgPool>) -> impl Responder {
-    let new_user_input = user_input.into_inner();
 
-    let result = sqlx::query(
-        "INSERT INTO user_table (first_name, last_name, email, phone, profile_picture, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)")
-        .bind(&new_user_input.first_name)
-        .bind(&new_user_input.last_name)
-        .bind(&new_user_input.email)
-        .bind(&new_user_input.phone)
-        .bind(&new_user_input.profile_picture)
-        .bind(&new_user_input.created_at)
-        .bind(&new_user_input.updated_at)
-        .execute(pool.as_ref())
-        .await;
-
-    match result {
-        Ok(_) => HttpResponse::Ok().json(new_user_input),
-        Err(_) => HttpResponse::InternalServerError().finish(),
-    }
-}
 
 pub async fn get_users(pool: web::Data<PgPool>) -> impl Responder {
     match sqlx::query_as::<_, User>("SELECT user_id, first_name, last_name, email, phone, profile_picture,user_role, created_at, updated_at FROM user_table")

@@ -1,8 +1,9 @@
 use actix_web::{web, HttpResponse, Responder};
 use sqlx:: PgPool;
 use crate::model::product::Product;
-// use crate::model::models::Product;
 
+
+//Create A product
 pub async fn create_product(product_input: web::Json<Product>, pool: web::Data<PgPool>) -> impl Responder {
     let new_product_input = product_input.into_inner();
 println!("Inside create_product");
@@ -16,16 +17,16 @@ println!("Inside create_product");
         .bind(&new_product_input.specifications)
         .bind(&new_product_input.created_at)
         .bind(&new_product_input.updated_at)
-        .execute(pool.as_ref()) // Use `as_ref()` to get a reference to the connection pool
+        .execute(pool.as_ref()) 
         .await;
 
     match result {
-        Ok(_) => HttpResponse::Ok().json(new_product_input), // Return the created product if successful
-        Err(_) => HttpResponse::InternalServerError().finish(), // Return internal server error if failed
+        Ok(_) => HttpResponse::Ok().json(new_product_input), 
+        Err(_) => HttpResponse::InternalServerError().finish(), 
     }
 }
 
-
+//Get ALL products
 pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
     match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at FROM product")
         .fetch_all(pool.as_ref())
@@ -42,6 +43,7 @@ pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
     }
 }
 
+//get product by its id
 pub async fn get_product_by_product_id(
     product_id: web::Path<i32>,
     pool: web::Data<PgPool>,
@@ -66,6 +68,7 @@ pub async fn get_product_by_product_id(
     }
 }
 
+//update product by using its id
 pub async fn update_product(
     product_id: web::Path<i32>,
     product_input: web::Json<Product>,
@@ -97,7 +100,7 @@ pub async fn update_product(
     }
 }
 
-
+//delete product
 pub async fn delete_product(
     product_id: web::Path<i32>,
     pool: web::Data<PgPool>,
