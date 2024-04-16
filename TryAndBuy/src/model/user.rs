@@ -9,6 +9,7 @@ pub struct User {
     pub email: Vec<String>,
     pub phone: String,
     pub profile_picture: Option<Vec<u8>>,
+    pub user_role: Option<String>,
     pub created_at: String,
     pub updated_at: Option<String>,
 }

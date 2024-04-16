@@ -25,7 +25,7 @@ pub async fn create_user(user_input: web::Json<User>, pool: web::Data<PgPool>) -
 }
 
 pub async fn get_users(pool: web::Data<PgPool>) -> impl Responder {
-    match sqlx::query_as::<_, User>("SELECT user_id, login_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at FROM user_table")
+    match sqlx::query_as::<_, User>("SELECT user_id, first_name, last_name, email, phone, profile_picture,user_role, created_at, updated_at FROM user_table")
         .fetch_all(pool.as_ref())
         .await
     {
@@ -46,7 +46,7 @@ pub async fn get_user_by_id(
     let user_id = user_id.into_inner();
 
     match sqlx::query_as::<_, User>(
-        "SELECT user_id, login_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at
+        "SELECT user_id, first_name, last_name, email, phone, profile_picture,user_role, created_at, updated_at
          FROM user_table
          WHERE user_id = $1")
         .bind(&user_id)
