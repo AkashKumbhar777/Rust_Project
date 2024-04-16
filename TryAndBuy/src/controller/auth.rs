@@ -1,10 +1,14 @@
-use actix_web::{web, HttpResponse, Error, error::InternalError};
+use actix_web::{web,HttpRequest, HttpResponse, Error, error::InternalError, HttpResponseBuilder, HttpMessage,http::StatusCode};
+use actix_web::dev::{ServiceRequest, ServiceResponse};
+use actix_service::Service;
 use serde::{Deserialize, Serialize};
 use reqwest::Client;
 use crate::model::user::User;
 use crate::db_connect::db::get_pool;
 use base64::decode as base64_decode;
-
+use std::future::Future;
+use actix_web::web::Data;
+use std::sync::Arc;
 
 #[derive(Deserialize)]
 pub struct AuthCode {
@@ -35,7 +39,12 @@ pub async fn authenticate(auth_code: web::Json<AuthCode>) -> Result<HttpResponse
     println!("{:?}", token);
     let user_info = fetch_user_info(&token.access_token).await?;
     save_user_info_to_database(&user_info).await?;
-    Ok(HttpResponse::Ok().json(token))
+    let token_json = serde_json::to_string(&token)
+        .map_err(|e| InternalError::new(format!("Failed to serialize token: {}", e), actix_web::http::StatusCode::INTERNAL_SERVER_ERROR))?;
+    Ok(HttpResponse::Ok()
+        .header("Content-Type", "application/json")
+        .header("Location", "http://your_redirect_uri")
+        .body(token_json))
 }
 
 //Getting JSON Token by using this method
@@ -165,3 +174,47 @@ pub async fn save_user_info_to_database(user_info: &User) -> Result<User, Error>
     Ok(user)
 }
 
+
+
+pub async fn authentication_middleware(
+    srv: ServiceRequest,
+    next: impl Service<ServiceRequest, Response = ServiceResponse, Error = Error, Future = impl Future<Output = Result<ServiceResponse, Error>>> + 'static,
+) -> Result<ServiceResponse, Error> {
+    // Extract the JWT token from the request headers
+    let authorization_header = srv.headers().get("Authorization");
+    let jwt_token = match authorization_header {
+        Some(header_value) => {
+            match header_value.to_str() {
+                Ok(token_str) => {
+                    if token_str.starts_with("Bearer ") {
+                        Some(token_str.trim_start_matches("Bearer ").to_owned())
+                    } else {
+                        None
+                    }
+                },
+                Err(_) => None,
+            }
+        },
+        None => None,
+    };
+
+    // Validate the JWT token and fetch user information
+    let user_info = match jwt_token {
+        Some(token) => fetch_user_info(&token).await,
+        None => return Err(actix_web::error::ErrorUnauthorized("No JWT token provided")),
+    };
+
+    match user_info {
+        Ok(user_info) => {
+            // Attach user information to the request for use in route handlers
+            srv.extensions_mut().insert(user_info);
+            // Proceed with the request
+            let res = next.call(srv).await;
+            res
+        },
+        Err(_) => {
+            // If user info is not successfully obtained, return an Unauthorized response
+            Err(actix_web::error::ErrorUnauthorized("Unauthorized"))
+        }
+    }
+}

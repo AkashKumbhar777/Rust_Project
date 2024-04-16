@@ -1,36 +1,44 @@
 use actix_web::{web, HttpResponse, Responder};
-use sqlx:: PgPool;
+use sqlx::PgPool;
 use crate::model::product::Product;
-// use crate::model::models::Product;
+use crate::controller::sql_helper::{create, get, update, delete}; // Import the CRUD functions from sql_helper.rs
+use std::collections::HashMap;
 
-pub async fn create_product(product_input: web::Json<Product>, pool: web::Data<PgPool>) -> impl Responder {
+// Create a product
+pub async fn create_product(
+    product_input: web::Json<Product>,
+    pool: web::Data<PgPool>,
+) -> impl Responder {
     let new_product_input = product_input.into_inner();
-println!("Inside create_product");
-    let result = sqlx::query(
-        "INSERT INTO product (product_name, product_description, price, image_url, specifications, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)")
-        .bind(&new_product_input.product_name)
-        .bind(&new_product_input.product_description)
-        .bind(new_product_input.price)
-        .bind(&new_product_input.image_url)
-        .bind(&new_product_input.specifications)
-        .bind(&new_product_input.created_at)
-        .bind(&new_product_input.updated_at)
-        .execute(pool.as_ref()) // Use `as_ref()` to get a reference to the connection pool
-        .await;
+    println!("Inside create_product");
 
-    match result {
-        Ok(_) => HttpResponse::Ok().json(new_product_input), // Return the created product if successful
-        Err(_) => HttpResponse::InternalServerError().finish(), // Return internal server error if failed
+    // Assuming `product_name`, `product_description`, `image_url`, `specifications`, `created_at`, and `updated_at` are Strings or can be represented as &str
+    // Convert Product struct to HashMap<&str, &str>
+    let mut data = HashMap::new();
+    data.insert("product_name", new_product_input.product_name.as_str());
+    data.insert("product_description", new_product_input.product_description.as_deref().unwrap_or_default());
+    let price_str = new_product_input.price.to_string(); // Temporary variable to hold the String
+    data.insert("price", &price_str);
+    data.insert("image_url", new_product_input.image_url.as_deref().unwrap_or_default());
+    let specifications_str = new_product_input.specifications.as_ref().map(|s| s.to_string()).unwrap_or_default(); // Temporary variable to hold the String
+    data.insert("specifications", &specifications_str);
+    let created_at_str = new_product_input.created_at.to_string(); // Assuming conversion to String is necessary
+    data.insert("created_at", &created_at_str);
+    let updated_at_str = new_product_input.updated_at.to_string(); // Assuming conversion to String is necessary
+    data.insert("updated_at", &updated_at_str);
+
+    match create(pool.get_ref(), "product", &data).await { // Call create function from sql_helper
+        Ok(_) => HttpResponse::Ok().json(new_product_input),
+        Err(e) =>{ 
+            print!("{}", e);
+            HttpResponse::InternalServerError().finish()},
     }
 }
 
 
+// Get all products
 pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
-    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at FROM product")
-        .fetch_all(pool.as_ref())
-        .await
-    {
+    match get(pool.get_ref(), "product", "", &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
         Ok(products) => {
             println!("Retrieved {} products", products.len());
             HttpResponse::Ok().json(products)
@@ -42,54 +50,20 @@ pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
     }
 }
 
+// Get product by its id
 pub async fn get_product_by_product_id(
     product_id: web::Path<i32>,
     pool: web::Data<PgPool>,
 ) -> impl Responder {
     let product_id = product_id.into_inner();
-    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at FROM product WHERE product_id = $1")
-        .bind(product_id)
-        .fetch_optional(pool.as_ref())
-        .await
-    {
-        Ok(product) => {
-            if let Some(product) = product {
+    match get(pool.get_ref(), "product", &product_id.to_string(), &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
+        Ok(products) => {
+            if let Some(product) = products.get(0) {
                 HttpResponse::Ok().json(product)
             } else {
                 HttpResponse::NotFound().body("Product not found")
             }
-        }
-        Err(err) => {
-            println!("Failed to retrieve product: {}", err);
-            HttpResponse::InternalServerError().finish()
-        }
-    }
-}
-
-pub async fn update_product(
-    product_id: web::Path<i32>,
-    product_input: web::Json<Product>,
-    pool: web::Data<PgPool>,
-) -> impl Responder {
-    let product_id = product_id.into_inner();
-    let updated_product_input = product_input.into_inner();
-    let result = sqlx::query(
-        "UPDATE product 
-         SET product_name = $1, product_description = $2, price = $3, image_url = $4, specifications = $5, updated_at = $6
-         WHERE product_id = $7",
-    )
-    .bind(&updated_product_input.product_name)
-    .bind(&updated_product_input.product_description)
-    .bind(updated_product_input.price)
-    .bind(&updated_product_input.image_url)
-    .bind(&updated_product_input.specifications)
-    .bind(&updated_product_input.updated_at)
-    .bind(product_id)
-    .execute(pool.as_ref())
-    .await;
-
-    match result {
-        Ok(_) => HttpResponse::Ok().json(updated_product_input),
+        },
         Err(err) => {
             println!("Failed to retrieve product: {}", err);
             HttpResponse::InternalServerError().finish()
@@ -97,21 +71,46 @@ pub async fn update_product(
     }
 }
 
+// Update product by using its id
+pub async fn update_product(
+    product_id: web::Path<i32>,
+    product_input: web::Json<Product>,
+    pool: web::Data<PgPool>,
+) -> impl Responder {
+    let updated_product_input = product_input.into_inner();
+    let product_id = product_id.into_inner();
 
+    // Convert Product struct to HashMap<&str, &str>
+    let mut data = HashMap::new();
+    data.insert("product_name", updated_product_input.product_name.as_str());
+    data.insert("product_description", updated_product_input.product_description.as_deref().unwrap_or_default());
+    let price_str = updated_product_input.price.to_string(); // Temporary variable to hold the String
+    data.insert("price", &price_str);
+    data.insert("image_url", updated_product_input.image_url.as_deref().unwrap_or_default());
+    let specifications_str = updated_product_input.specifications.as_ref().map(|s| s.to_string()).unwrap_or_default(); // Temporary variable to hold the String
+    data.insert("specifications", &specifications_str);
+    let created_at_str = updated_product_input.created_at.to_string(); // Assuming conversion to String is necessary
+    data.insert("created_at", &created_at_str);
+    let updated_at_str = updated_product_input.updated_at.to_string(); // Assuming conversion to String is necessary
+    data.insert("updated_at", &updated_at_str);
+
+    match update(pool.get_ref(), "product", &product_id.to_string(), &data).await { // Call update function from sql_helper with corrected data type
+        Ok(_) => HttpResponse::Ok().json(updated_product_input),
+        Err(err) => {
+            println!("Failed to update product: {}", err);
+            HttpResponse::InternalServerError().finish()
+        },
+    }
+}
+
+// Delete product
 pub async fn delete_product(
     product_id: web::Path<i32>,
     pool: web::Data<PgPool>,
 ) -> impl Responder {
     let product_id = product_id.into_inner();
-    let result = sqlx::query("DELETE FROM product WHERE product_id = $1")
-        .bind(product_id)
-        .execute(pool.as_ref())
-        .await;
-
-    match result {
+    match delete(pool.get_ref(), "product", &product_id.to_string()).await { // Call delete function from sql_helper
         Ok(_) => HttpResponse::NoContent().finish(),
         Err(_) => HttpResponse::InternalServerError().finish(),
     }
 }
-
-
