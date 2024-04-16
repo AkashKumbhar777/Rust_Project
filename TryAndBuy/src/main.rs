@@ -3,7 +3,7 @@ use actix_web::http::header;
 use actix_cors::Cors;
 use std::convert::TryInto;
 use crate::db_connect::db::get_pool;
-use crate::controller::auth::authenticate;
+use crate::controller::auth::{authenticate, authentication_middleware};
 mod controller;
 mod db_connect;
 mod model;
