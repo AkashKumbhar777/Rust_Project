@@ -1,37 +1,29 @@
 use actix_web::{web, HttpResponse, Responder};
 use sqlx::PgPool;
 use crate::model::product::Product;
-use crate::controller::sql_helper::{create, get, update, delete}; // Import the CRUD functions from sql_helper.rs
-use std::collections::HashMap;
+use crate::controller::sql_helper::{get, delete}; 
+
 
 // Create a product
-pub async fn create_product(
-    product_input: web::Json<Product>,
-    pool: web::Data<PgPool>,
-) -> impl Responder {
+pub async fn create_product(product_input: web::Json<Product>, pool: web::Data<PgPool>) -> impl Responder {
     let new_product_input = product_input.into_inner();
-    println!("Inside create_product");
+println!("Inside create_product");
+    let result = sqlx::query(
+        "INSERT INTO product (product_name, product_description, price, image_url, specifications, created_at, updated_at)
+             VALUES ($1, $2, $3, $4, $5, $6, $7)")
+        .bind(&new_product_input.product_name)
+        .bind(&new_product_input.product_description)
+        .bind(new_product_input.price)
+        .bind(&new_product_input.image_url)
+        .bind(&new_product_input.specifications)
+        .bind(&new_product_input.created_at)
+        .bind(&new_product_input.updated_at)
+        .execute(pool.as_ref()) // Use `as_ref()` to get a reference to the connection pool
+        .await;
 
-    // Assuming `product_name`, `product_description`, `image_url`, `specifications`, `created_at`, and `updated_at` are Strings or can be represented as &str
-    // Convert Product struct to HashMap<&str, &str>
-    let mut data = HashMap::new();
-    data.insert("product_name", new_product_input.product_name.as_str());
-    data.insert("product_description", new_product_input.product_description.as_deref().unwrap_or_default());
-    let price_str = new_product_input.price.to_string(); // Temporary variable to hold the String
-    data.insert("price", &price_str);
-    data.insert("image_url", new_product_input.image_url.as_deref().unwrap_or_default());
-    let specifications_str = new_product_input.specifications.as_ref().map(|s| s.to_string()).unwrap_or_default(); // Temporary variable to hold the String
-    data.insert("specifications", &specifications_str);
-    let created_at_str = new_product_input.created_at.to_string(); // Assuming conversion to String is necessary
-    data.insert("created_at", &created_at_str);
-    let updated_at_str = new_product_input.updated_at.to_string(); // Assuming conversion to String is necessary
-    data.insert("updated_at", &updated_at_str);
-
-    match create(pool.get_ref(), "product", &data).await { // Call create function from sql_helper
-        Ok(_) => HttpResponse::Ok().json(new_product_input),
-        Err(e) =>{ 
-            print!("{}", e);
-            HttpResponse::InternalServerError().finish()},
+    match result {
+        Ok(_) => HttpResponse::Ok().json(new_product_input), // Return the created product if successful
+        Err(_) => HttpResponse::InternalServerError().finish(), // Return internal server error if failed
     }
 }
 
@@ -77,27 +69,27 @@ pub async fn update_product(
     product_input: web::Json<Product>,
     pool: web::Data<PgPool>,
 ) -> impl Responder {
-    let updated_product_input = product_input.into_inner();
     let product_id = product_id.into_inner();
+    let updated_product_input = product_input.into_inner();
+    let result = sqlx::query(
+        "UPDATE product 
+         SET product_name = $1, product_description = $2, price = $3, image_url = $4, specifications = $5, updated_at = $6
+         WHERE product_id = $7",
+    )
+    .bind(&updated_product_input.product_name)
+    .bind(&updated_product_input.product_description)
+    .bind(updated_product_input.price)
+    .bind(&updated_product_input.image_url)
+    .bind(&updated_product_input.specifications)
+    .bind(&updated_product_input.updated_at)
+    .bind(product_id)
+    .execute(pool.as_ref())
+    .await;
 
-    // Convert Product struct to HashMap<&str, &str>
-    let mut data = HashMap::new();
-    data.insert("product_name", updated_product_input.product_name.as_str());
-    data.insert("product_description", updated_product_input.product_description.as_deref().unwrap_or_default());
-    let price_str = updated_product_input.price.to_string(); // Temporary variable to hold the String
-    data.insert("price", &price_str);
-    data.insert("image_url", updated_product_input.image_url.as_deref().unwrap_or_default());
-    let specifications_str = updated_product_input.specifications.as_ref().map(|s| s.to_string()).unwrap_or_default(); // Temporary variable to hold the String
-    data.insert("specifications", &specifications_str);
-    let created_at_str = updated_product_input.created_at.to_string(); // Assuming conversion to String is necessary
-    data.insert("created_at", &created_at_str);
-    let updated_at_str = updated_product_input.updated_at.to_string(); // Assuming conversion to String is necessary
-    data.insert("updated_at", &updated_at_str);
-
-    match update(pool.get_ref(), "product", &product_id.to_string(), &data).await { // Call update function from sql_helper with corrected data type
+    match result {
         Ok(_) => HttpResponse::Ok().json(updated_product_input),
         Err(err) => {
-            println!("Failed to update product: {}", err);
+            println!("Failed to retrieve product: {}", err);
             HttpResponse::InternalServerError().finish()
         },
     }
