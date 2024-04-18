@@ -9,13 +9,14 @@ pub async fn create_product(product_input: web::Json<Product>, pool: web::Data<P
     let new_product_input = product_input.into_inner();
 println!("Inside create_product");
     let result = sqlx::query(
-        "INSERT INTO product (product_name, product_description, price, image_url, specifications, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)")
+        "INSERT INTO product (product_name, product_description, price, image_url, specifications,category, created_at, updated_at)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
         .bind(&new_product_input.product_name)
         .bind(&new_product_input.product_description)
         .bind(new_product_input.price)
         .bind(&new_product_input.image_url)
         .bind(&new_product_input.specifications)
+        .bind(&new_product_input.category)
         .bind(&new_product_input.created_at)
         .bind(&new_product_input.updated_at)
         .execute(pool.as_ref()) // Use `as_ref()` to get a reference to the connection pool
@@ -30,7 +31,10 @@ println!("Inside create_product");
 
 // Get all products
 pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
-    match get(pool.get_ref(), "product", "", &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
+    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications,category, created_at, updated_at FROM product")
+        .fetch_all(pool.as_ref())
+        .await
+    {
         Ok(products) => {
             println!("Retrieved {} products", products.len());
             HttpResponse::Ok().json(products)
@@ -48,7 +52,7 @@ pub async fn get_product_by_product_id(
     pool: web::Data<PgPool>,
 ) -> impl Responder {
     let product_id = product_id.into_inner();
-    match get(pool.get_ref(), "product", &product_id.to_string(), &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
+    match get(pool.get_ref(), "product", &product_id.to_string(), &["product_id", "product_name", "product_description", "price", "image_url", "specifications","category", "created_at", "updated_at"]).await { // Call get function from sql_helper
         Ok(products) => {
             if let Some(product) = products.get(0) {
                 HttpResponse::Ok().json(product)

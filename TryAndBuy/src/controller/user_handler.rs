@@ -111,3 +111,50 @@ pub async fn delete_user(user_id: web::Path<i32>, pool: web::Data<PgPool>) -> im
     }
 }
 
+pub async fn get_user_count_this_month(pool: web::Data<PgPool>) -> impl Responder {
+    let result: Result<Option<i64>, sqlx::Error> = sqlx::query_scalar!(
+        "SELECT COUNT(*) FROM user_table
+         WHERE EXTRACT(YEAR FROM CURRENT_DATE) = EXTRACT(YEAR FROM TO_DATE(created_at, 'YYYY-MM-DD'))
+         AND EXTRACT(MONTH FROM CURRENT_DATE) = EXTRACT(MONTH FROM TO_DATE(created_at, 'YYYY-MM-DD'))"
+    )
+    .fetch_one(pool.get_ref())
+    .await;
+
+    match result {
+        Ok(Some(user_count)) => HttpResponse::Ok().json(user_count),
+        Ok(None) => HttpResponse::Ok().json(0),
+        Err(_) => HttpResponse::InternalServerError().finish(),
+    }
+}
+
+pub async fn get_user_count_this_year(pool: web::Data<PgPool>) -> impl Responder {
+    let result: Result<Option<i64>, sqlx::Error> = sqlx::query_scalar!(
+        "SELECT COUNT(*) FROM user_table
+         WHERE EXTRACT(YEAR FROM CURRENT_DATE) = EXTRACT(YEAR FROM TO_DATE(created_at, 'YYYY-MM-DD'))"
+    )
+    .fetch_one(pool.get_ref())
+    .await;
+
+    match result {
+        Ok(Some(user_count)) => HttpResponse::Ok().json(user_count),
+        Ok(None) => HttpResponse::Ok().json(0),
+        Err(_) => HttpResponse::InternalServerError().finish(),
+    }
+}
+
+pub async fn get_user_count_today(pool: web::Data<PgPool>) -> impl Responder {
+    let result: Result<Option<i64>, sqlx::Error> = sqlx::query_scalar!(
+        "SELECT COUNT(*) FROM user_table
+         WHERE CURRENT_DATE = TO_DATE(created_at, 'YYYY-MM-DD')"
+    )
+    .fetch_one(pool.get_ref())
+    .await;
+
+    match result {
+        Ok(Some(user_count)) => HttpResponse::Ok().json(user_count),
+        Ok(None) => HttpResponse::Ok().json(0),
+        Err(_) => HttpResponse::InternalServerError().finish(),
+    }
+}
+
+

@@ -3,7 +3,8 @@ use actix_web::http::header;
 use actix_cors::Cors;
 use std::convert::TryInto;
 use crate::db_connect::db::get_pool;
-use crate::controller::auth::{authenticate, authentication_middleware};
+use crate::controller::auth::authenticate;
+// use crate::controller::auth::authentication_middleware;
 mod controller;
 mod db_connect;
 mod model;
@@ -24,7 +25,7 @@ async fn main() -> std::io::Result<()> {
         let cors_headers_clone = cors_headers.clone();
         let cors = Cors::default()
             .allow_any_origin()
-            .allowed_methods(vec!["GET", "POST", "PUT","DELETE","PUT","DELETE"])
+            .allowed_methods(vec!["GET", "POST", "PUT","DELETE"])
             .allowed_headers(cors_headers_clone)
             .max_age(3600);
 
@@ -43,6 +44,9 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/user/update/{id}").route(web::put().to(controller::user_handler::update_user)))
             .service(web::resource("/user/delete/{id}").route(web::delete().to(controller::user_handler::delete_user)))
             .service(web::resource("/userbyemail/{email}").route(web::get().to(controller::user_handler::get_user_by_email)))
+            .service(web::resource("users/get_user_count_today").route(web::get().to(controller::user_handler::get_user_count_today)))
+            .service(web::resource("users/get_user_count_this_month").route(web::get().to(controller::user_handler::get_user_count_this_month)))
+            .service(web::resource("users/get_user_count_this_year").route(web::get().to(controller::user_handler::get_user_count_this_year)))
 
             .service(web::resource("/trycart").route(web::post().to(controller::trycart_handler::create_trycart)))//trycart handler
             .service(web::resource("/trycarts").route(web::get().to(controller::trycart_handler::get_all_trycarts))) 
@@ -67,6 +71,19 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("orders/{uid}").route(web::get().to(controller::order_handler::get_orders_by_userid)))
             .service(web::resource("order/update/{id}").route(web::put().to(controller::order_handler::update_order)))
             .service(web::resource("order/delete/{id}").route(web::delete().to(controller::order_handler::delete_order)))
+            .service(web::resource("/order/details").route(web::get().to(controller::order_handler::get_orders_with_details)))
+
+            .service(web::resource("/sales/get_total_sales").route(web::get().to(controller::sales_track::track_total_sale)))
+            .service(web::resource("/sales/total_revenue_today").route(web::get().to(controller::sales_track::total_revenue_today)))
+            .service(web::resource("/sales/get_monthly_revenue/{month}").route(web::get().to(controller::sales_track::total_monthly_revenue)))
+            .service(web::resource("/sales/get_yearly_revenue/{year}").route(web::get().to(controller::sales_track::total_yearly_revenue)))
+            .service(web::resource("/sales/get_total_orders_till_now").route(web::get().to(controller::sales_track::total_orders_till_now)))
+            .service(web::resource("/sales/get_total_revenue_till_now").route(web::get().to(controller::sales_track::total_revenue_till_now)))
+            .service(web::resource("sales/total_orders_today").route(web::get().to(controller::sales_track::total_orders_today)))
+            .service(web::resource("sales/total_orders_this_month").route(web::get().to(controller::sales_track::total_orders_this_month)))
+            .service(web::resource("sales/total_orders_this_year").route(web::get().to(controller::sales_track::total_orders_this_year)))
+
+
 
 
     })
