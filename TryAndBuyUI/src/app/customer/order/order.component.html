@@ -1,0 +1,40 @@
+<!-- Page Header Start -->
+<div class="container-fluid bg-secondary mb-5">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+    <h1 class="font-weight-semi-bold text-uppercase mb-3">Orders</h1>
+    <div class="d-inline-flex">
+      <p class="m-0"><a routerLink="/">Home</a></p>
+      <p class="m-0 px-2">-</p>
+      <p class="m-0">Shop Detail</p>
+    </div>
+  </div>
+</div>
+<!-- Page Header End -->
+
+
+<!-- Order Detail Start -->
+<div class="container-fluid pt-5">
+  <table *ngFor="let item of ordes">
+    <tr>
+      <th>Order</th>
+      <th>Order ID</th>
+      <th>Price</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+    <tr>
+      <td><img src="https://www.clipartmax.com/png/middle/210-2106541_track-my-order-beach-volleyball.png"></td>
+      <td>{{item.order_id}}</td>
+      <td>{{item.total_amount}}</td>
+      <td>{{item.order_date}}</td>
+      <td><button class="cancel-order" (click)="cancelOrder(item.order_id)"><i class="fa fa-trash"
+            aria-hidden="true"></i>&nbsp;Cancel Order</button></td>
+    </tr>
+
+  </table>
+
+  <div class="order-presence">
+    <h2 routerLink="/"><i class="fa fa-hand-spock-o" aria-hidden="true"></i>&nbsp;Please Click Here To Shop</h2>
+  </div>
+</div>
+<!-- Wishlist Detail End -->

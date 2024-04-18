@@ -55,11 +55,10 @@ pub async fn get_addresses_by_user_id(
          FROM address
          WHERE user_id = $1")
         .bind(&user_id)
-        .fetch_optional(pool.as_ref())
+        .fetch_all(pool.as_ref())
         .await
     {
-        Ok(Some(address)) => HttpResponse::Ok().json(address),
-        Ok(None) => HttpResponse::NotFound().finish(),
+        Ok(address) => HttpResponse::Ok().json(address),
         Err(e) => {
             eprintln!("Error fetching address: {:?}", e);
             HttpResponse::InternalServerError().finish()

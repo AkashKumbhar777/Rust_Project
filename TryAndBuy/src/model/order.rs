@@ -5,8 +5,9 @@ use sqlx::prelude::FromRow;
 pub struct Order {
     pub order_id: Option<i32>,
     pub user_id: i32,
+    pub address_id: i32,
     pub product_id: i32,
     pub order_status: String,
     pub order_date: String,
-    pub total_amount: f64,
+    pub total_amount: i64,
 }

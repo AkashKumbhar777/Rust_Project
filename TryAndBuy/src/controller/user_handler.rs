@@ -8,7 +8,7 @@ pub async fn create_user(user_input: web::Json<User>, pool: web::Data<PgPool>) -
     let result = sqlx::query(
         "INSERT INTO user_table (login_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)")
-        .bind(&new_user_input.login_id)
+        // .bind(&new_user_input.login_id)
         .bind(&new_user_input.first_name)
         .bind(&new_user_input.last_name)
         .bind(&new_user_input.email)
@@ -47,7 +47,7 @@ pub async fn get_user_by_id(
     let user_id = user_id.into_inner();
 
     match sqlx::query_as::<_, User>(
-        "SELECT user_id, login_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at
+        "SELECT user_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at,user_role
          FROM user_table
          WHERE user_id = $1")
         .bind(&user_id)
@@ -67,7 +67,7 @@ pub async fn get_user_by_email(
     let email = email.into_inner();
 
     match sqlx::query_as::<_, User>(
-        "SELECT user_id, login_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at
+        "SELECT user_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at,user_role
          FROM user_table
          WHERE email = $1")
         .bind(&email)
@@ -76,7 +76,9 @@ pub async fn get_user_by_email(
     {
         Ok(Some(user)) => HttpResponse::Ok().json(user),
         Ok(None) => HttpResponse::NotFound().finish(),
-        Err(_) => HttpResponse::InternalServerError().finish(),
+        Err(e) => {print!("e={:?}",e);
+            HttpResponse::InternalServerError().finish()
+        },
     }
 }
 
@@ -102,7 +104,7 @@ pub async fn update_user(
          profile_picture = $6,
          updated_at = $7
          WHERE user_id = $8")
-        .bind(&updated_user_input.login_id)
+        // .bind(&updated_user_input.login_id)
         .bind(&updated_user_input.first_name)
         .bind(&updated_user_input.last_name)
         .bind(&updated_user_input.email)

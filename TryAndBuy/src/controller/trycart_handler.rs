@@ -9,7 +9,7 @@ pub async fn create_trycart(
 ) -> impl Responder {
     let new_try_cart_input = try_cart_input.into_inner();
     let result = sqlx::query(
-        "INSERT INTO try_cart (product_id, added_at,user_id)
+        "INSERT INTO try_cart (product_id, added_at ,user_id)
          VALUES ($1, $2,$3)")
          .bind(&new_try_cart_input.product_id)
          .bind(&new_try_cart_input.added_at)
@@ -92,12 +92,12 @@ pub async fn delete_trycart(
     path_params: web::Path<(i32,i32)>,
     pool: web::Data<PgPool>
 ) -> impl Responder {
-    let (user_id,try_cart_id) = path_params.into_inner();
+    let (user_id,product_id) = path_params.into_inner();
 
     let result = sqlx::query(
         "DELETE FROM try_cart
-         WHERE try_cart_id = $1 and user_id = $2")
-        .bind(&try_cart_id)
+         WHERE product_id = $1 and user_id = $2")
+        .bind(&product_id)
         .bind(&user_id)
         .execute(pool.as_ref())
         .await;

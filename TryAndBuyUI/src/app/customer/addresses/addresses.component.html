@@ -1,0 +1,93 @@
+<br>
+<div class="box-container">
+  <div class="box" *ngFor="let item of AllAddresses">
+    <div class="address">
+      <div>
+        <h6>{{item.address_line1}}, {{item.address_line2}}, {{item.city}}</h6>
+      </div>
+      <div>
+        <h6>{{item.add_state}}. {{item.postal_code}}</h6>
+      </div>
+      <div>
+        <h6>{{item.country}}</h6>
+      </div>
+      <button class="btn btn-danger" (click)="removeadd(item.address_id)">Remove</button>
+    </div>
+
+
+  </div>
+  <div class="container py-5">
+    <div class="row d-flex justify-content-center align-items-center">
+      <div class="col">
+        <div class="card my-4 shadow-3">
+          <div class="row g-0">
+            <div class="col-xl-6 d-xl-block bg-image">
+              <img src="https://mdbcdn.b-cdn.net/img/Others/extended-example/delivery.webp" alt="Sample photo"
+                class="img-fluid" />
+              <div class="mask" style="background-color: rgba(0, 0, 0, 0.6)">
+                <div class=" justify-content-center align-items-center h-100">
+                  <div class=" text-center" style="margin-top: 220px;">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-6">
+              <div class="card-body p-md-5 text-black">
+                <h3 class="mb-4 text-uppercase">Address</h3>
+
+                <form id="form" [formGroup]="addressForm" (ngSubmit)="onSubmit()">
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div data-mdb-input-init class="form-outline">
+                        <input type="text" id="form3Example1m" class="form-control form-control-lg"
+                          formControlName="address_line1" />
+                        <label class="form-label" for="form3Example1m">Address Line 1</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div data-mdb-input-init class="form-outline">
+                        <input type="text" id="form3Example1n" class="form-control form-control-lg"
+                          formControlName="address_line2" />
+                        <label class="form-label" for="form3Example1n">Address Line 2</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div data-mdb-input-init class="form-outline">
+                        <input type="text" id="form3Example3" class="form-control form-control-lg"
+                          formControlName="city" />
+                        <label class="form-label" for="form3Example3">City</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div data-mdb-input-init class="form-outline">
+                        <input type="text" id="form3Example4" class="form-control form-control-lg"
+                          formControlName="add_state" />
+                        <label class="form-label" for="form3Example4">State</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="text" id="form3Example5" class="form-control form-control-lg"
+                      formControlName="postal_code" />
+                    <label class="form-label" for="form3Example5">Postal Code</label>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <input type="text" id="form3Example6" class="form-control form-control-lg"
+                      formControlName="country" />
+                    <label class="form-label" for="form3Example6">Country</label>
+                  </div>
+                  <div class="d-flex justify-content-end pt-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

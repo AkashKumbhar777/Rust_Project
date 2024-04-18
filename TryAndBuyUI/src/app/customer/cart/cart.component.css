@@ -1,108 +1,88 @@
-table { border-collapse: collapse; border-spacing: 0; }
-img { border: 0; max-width: 100%; }
-
-h1 {
-  /* font-family: 'Fredoka One', Helvetica, Tahoma, sans-serif; */
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  color: rgb(61, 68, 72);
-  text-shadow: 1px 2px 0 #050506;
-  font-size: 3.5em;
-  line-height: 1.1em;
-  padding: 6px 0;
-  /* font-weight: normal; */
-  text-align: center;
-  
-}
-.heading-img{
-    background-image: url('https://onaircode.com/wp-content/uploads/2017/11/Tesselation-Transition.jpg');
-    background-size: cover;
-    background-position: center;
-  }
-
-  .checkout {
-    border: none; /* Remove border if not needed */
-    background-color: rgb(80, 80, 80); /* Your desired background color */
-    color: white; /* Text color */
-    padding: 10px 20px; /* Adjust padding as needed */
-    border-radius: 5px; /* Optional: Add border radius for rounded corners */
-    cursor: pointer; /* Optional: Change cursor to pointer on hover */
-}
-
-
-tr.totalprice, tr.extracosts {
-    height: 35px;
-    line-height: 35px;
-  }
-  tr.extracosts {
-    background: rgb(116, 124, 214);
-    /* plum */
-  }
-/* page structure */
 #w {
-  display: block;
-  width: 600px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
 #title {
-  display: block;
-  width: 100%;
-  padding: 10px 0;
-  -webkit-border-top-right-radius: 5px;
-  -webkit-border-top-left-radius: 5px;
-  -moz-border-radius-topright: 6px;
-  -moz-border-radius-topleft: 6px;
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
+  background-color: #f8f9fa;
+  padding: 20px;
+  text-align: center;
+}
+
+.heading-img h1 {
+  margin: 0;
 }
 
 #page {
-  display: block;
-  background: #fff;
-  padding: 15px 0;
-  /* -webkit-box-shadow: 0 2px 4px rgba(0,0,0,0.4);
-  -moz-box-shadow: 0 2px 4px rgba(0,0,0,0.4); */
+  padding: 20px;
 }
 
-/** cart table **/
 #cart {
-  display: block;
-  border-collapse: collapse;
-  margin: 0;
   width: 100%;
-  font-size: 1.2em;
-  color: whi;
-}
-#cart thead th {
-  padding: 8px 0;
-  font-weight: bold;
+  border-collapse: collapse;
 }
 
-#cart thead th.first {
-  width: 175px;
-}
-#cart thead th.second {
-  width: 45px;
-}
-#cart thead th.third {
-  width: 230px;
-}
-#cart thead th.fourth {
-  width: 130px;
-}
-#cart thead th.fifth {
-  width: 20px;
+#cart th, #cart td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
 }
 
-#cart tbody td {
+#cart th {
+  background-color: #f2f2f2;
+}
+
+.productitm {
+  border-bottom: 1px solid #ddd;
+}
+
+.thumb {
+  max-width: 50px;
+  max-height: 50px;
+}
+
+.quantity-group {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-group button {
+  padding: 3px 6px;
+  height: 20px;
+  border: 1px solid #ccc;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.quantity-group button:hover {
+  background-color: #e0e0e0;
+}
+
+.quantity-group input {
+  width: 40px;
+  height: 20px;
+  padding: 3px;
   text-align: center;
-  margin-top: 4px;
+  border: 1px solid #ccc;
 }
 
-tr.productitm {
-  height: 65px;
-  line-height: 65px;
-  border-bottom: 1px solid #d7dbe0;
+.btn-primary {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
 }
 
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.remove {
+  cursor: pointer;
+}
+
+.remove img {
+  width: 20px;
+  height: 20px;
+}

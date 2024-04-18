@@ -27,7 +27,7 @@ println!("Inside create_product");
 
 
 pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
-    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at FROM product")
+    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at, categary FROM product")
         .fetch_all(pool.as_ref())
         .await
     {
@@ -47,7 +47,7 @@ pub async fn get_product_by_product_id(
     pool: web::Data<PgPool>,
 ) -> impl Responder {
     let product_id = product_id.into_inner();
-    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at FROM product WHERE product_id = $1")
+    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at,categary FROM product WHERE product_id = $1")
         .bind(product_id)
         .fetch_optional(pool.as_ref())
         .await

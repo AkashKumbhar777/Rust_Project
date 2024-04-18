@@ -5,6 +5,7 @@ export class Products{
         specifications: string;
         product_description: string;
         image_url: string;
+        categary: string;
         updated_at: string;
         created_at: string;
 

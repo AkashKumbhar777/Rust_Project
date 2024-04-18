@@ -116,7 +116,110 @@
     color: #666;
 }
 
+.pay-now-button {
+    background-color: #007bff; /* Blue background */
+    color: #fff; /* White text */
+    border: none; /* No border */
+    padding: 10px 20px; /* Padding */
+    font-size: 16px; /* Font size */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s ease; /* Smooth transition */
+  }
+  
+  .pay-now-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
 
+  .select-indicator {
+    display: flex;
+    align-items: center;
+}
+/* Style for the box container */
+.box-container.show {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 100%; /* Ensure the container doesn't exceed the width of its parent */
+}
+
+/* Style for individual box */
+.box {
+    flex: 1 1 calc(33.33% - 10px); /* Adjust width and margins as needed */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    cursor: pointer;
+    box-sizing: border-box; /* Ensure padding and borders are included in the box's width */
+}
+
+/* Style for selected box */
+.box.selected {
+    background-color: #f0f0f0;
+}
+
+/* Style for select indicator */
+.select-indicator {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.separator {
+    position: absolute;
+    top: calc(100% + 10px); /* Adjust the space between the addresses and the separator */
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: #ccc; /* Change color as per your design */
+}
+.box {
+    margin-bottom: 10px; /* Adjust the space between each address */
+}
+
+/* CSS */
+.button-27 {
+  appearance: none;
+  background-color: #000000;
+  border: 2px solid #1A1A1A;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  min-height: 60px;
+  min-width: 0;
+  outline: none;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+  will-change: transform;
+}
+
+.button-27:disabled {
+  pointer-events: none;
+}
+
+.button-27:hover {
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.button-27:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
+  
 /* Responsive Styles */
 @media only screen and (max-width: 600px) {
     .payment-container {
