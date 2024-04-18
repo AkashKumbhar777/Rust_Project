@@ -11,5 +11,10 @@ pub struct User {
     pub profile_picture: Option<Vec<u8>>,
     pub user_role: Option<String>,
     pub created_at: String,
+<<<<<<< HEAD
     pub updated_at: Option<String>,
+=======
+    pub updated_at: String,
+    pub user_role:String
+>>>>>>> shreya
 }

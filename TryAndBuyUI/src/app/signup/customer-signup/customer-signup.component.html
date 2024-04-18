@@ -12,7 +12,7 @@
 				<small class="signup-msg">
 					Email</small>
 
-				<input type="password" name="password" placeholder="Password" formControlName="password">
+				<input type="password" name="password" placeholder="Password" >
 				<small class="signup-msg">
 					Password</small>
 
@@ -24,7 +24,7 @@
 		<div class="login">
 			<form [formGroup]="loginForm" (ngSubmit)="onLogin()">
 				<label for="chk" aria-hidden="true">User Login</label>
-				<input type="email" name="username" placeholder="username" formControlName="username">
+				<input type="email" name="email" placeholder="email" formControlName="email">
 				<input type="password" name="password" placeholder="Password" formControlName="password">
 				<button type="submit">Login</button>
 			</form>

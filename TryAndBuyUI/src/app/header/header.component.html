@@ -1,41 +1,154 @@
-<div class="container">
-    <nav class="nav">
-        <h1 class="header" routerLink="/">Shopping Website</h1>
+<!-- Navbar Start -->
+<div class="container-fluid mb-5">
+    <div class="row border-top px-xl-5">
+        <div class="col-lg-3 d-none d-lg-block">
 
-        <div class="search-bar">
-            <input type="text" placeholder="Search for Products">
-            <button>Search</button>
-            <ul class="suggested-result">
-                <!-- Suggestions will be dynamically populated here -->
-            </ul>
+            <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0"
+                id="navbar-vertical">
+                <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                    <div class="nav-item dropdown">
+                        <!-- <a href="#" class="nav-link" data-toggle="dropdown">Dresses <i class="fa fa-angle-down float-right mt-1"></i></a> -->
+                        <div class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
+                            <a href="" class="dropdown-item">Men's Dresses</a>
+                            <a href="" class="dropdown-item">Women's Dresses</a>
+                            <a href="" class="dropdown-item">Baby's Dresses</a>
+                        </div>
+                    </div>
+                    <ul>
+                        <li><a href="" class="nav-item nav-link">Mens</a></li>
+                        <li><a href="" class="nav-item nav-link">Women</a></li>
+                        <li><a href="" class="nav-item nav-link">Kids</a></li>
+                    </ul>
+
+
+
+                </div>
+            </nav>
         </div>
+        <div class="col-lg-9">
+            <div id="header-carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" style="height: 410px;">
+                        <img class="img-fluid"
+                            src="https://assets.telegraphindia.com/telegraph/f54f6edc-11e0-4b9b-a1b2-3ffdad115d04.jpg"
+                            alt="Image">
+                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                            <div class="p-3" style="max-width: 700px;">
+                                <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order
+                                </h4>
+                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        <div [ngSwitch]="menuType" class="menu">
-            <ul *ngSwitchCase="'default'">
-                <li routerLink="/">Shop</li>
-                <li routerLink="/cart" class="cart-logo"></li>
-                <!-- <li routerLink="/orders">Orders</li>
-                <li routerLink="/products">Products</li>
-                <li routerLink="/products/add">Add</li>
-                <li (click)="onCustomerLogout()">Logout</li>  -->
-                <li routerLink="/seller-signup">Seller</li>
-                <li routerLink="/customer-signup">Customer</li>
-                <!-- <li (click)="signInOrSignUp()">Login</li> -->
-            </ul>
-
-            <ul *ngSwitchCase="'customer'">
-                <li routerLink="/">Shop</li>
-                <li routerLink="/cart" class="cart-logo"></li>
-                <li routerLink="/orders">Orders</li>
-                <li routerLink="/user">Profile</li>
-                <li (click)="onCustomerLogout()">Logout</li> 
-            </ul>
-
-            <ul *ngSwitchCase="'seller'">
-                <li routerLink="/products">Products</li>
-                <li routerLink="/products/add">Add</li>
-                <li (click)="onSellerLogout()">Logout</li> 
-            </ul>
+            </div>
         </div>
-    </nav>
+    </div>
 </div>
+<!-- Navbar End -->
+
+
+<!-- Featured Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5 pb-3">
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">Quality Product</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
+                <h5 class="font-weight-semi-bold m-0">Free Shipping</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">14-Day Return</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
+            <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
+                <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">24/7 Support</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Featured End -->
+
+
+<!-- Categories Start -->
+<div class="container-fluid pt-5">
+    <div class="row px-xl-5 pb-3">
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                <p class="text-right">15 Products</p>
+                <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid"
+                        src="https://img.freepik.com/free-photo/portrait-handsome-smiling-stylish-young-man-model-wearing-jeans-clothes-sunglasses-fashion-man_158538-5023.jpg?t=st=1713422562~exp=1713426162~hmac=0e0dcb2c4b0665a62eeb90b530e0b8d495e7626b9b6181529e114a922f519034&w=740"
+                        alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Men's dresses</h5>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                <p class="text-right">15 Products</p>
+                <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid"
+                        src="https://img.freepik.com/free-photo/graphic-tshirt-trendy-design-mockup-presented-wooden-hanger_460848-13975.jpg?t=st=1713422495~exp=1713426095~hmac=03b52b9f4ff49039209e62cf018a60a3daea21b965a90ee49a5ac65dada9ec3a&w=740"
+                        alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Women's dresses</h5>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 pb-1">
+            <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
+                <p class="text-right">15 Products</p>
+                <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                    <img class="img-fluid"
+                        src="https://img.freepik.com/free-photo/full-shot-kids-posing-together_23-2149853383.jpg?t=st=1713422607~exp=1713426207~hmac=02fad5dcd8038ef51dd24a4179e22c061fcca4d63c1b5b2a4edf8ddbbc6b0648&w=360"
+                        alt="">
+                </a>
+                <h5 class="font-weight-semi-bold m-0">Baby's dresses</h5>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Categories End -->
+
+
+<!-- Products Start -->
+<div class="container-fluid pt-5">
+    <div class="text-center mb-4">
+        <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
+    </div>
+    <div class="row px-xl-5 pb-3">
+        <div class="col-lg-3 col-md-6 col-sm-12 pb-1" *ngFor="let item of allProducts">
+            <div class="card product-item border-0 mb-4">
+                <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
+                    <img class="img-fluid w-100" src="{{item.image_url}}" alt="">
+                </div>
+                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
+                    <h6 class="text-truncate mb-3">{{item.product_name}}</h6>
+                    <div class="d-flex justify-content-center">
+                        <h6>{{item.price}}</h6>
+                        <h6 class="text-muted ml-2"><del>{{item.price}}</del></h6>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between bg-light border">
+                    <ul>
+                        <li class="btn btn-sm text-dark p-0" routerLink="/product-details/{{item.product_id}}"><i
+                                class="fas fa-eye text-primary mr-1"></i>View Detail</li>
+                        <!-- <li class="btn btn-sm text-dark p-0" routerLink="/cart" ><i class="fas fa-eye text-primary mr-1"></i>Add To Cart</li> -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Products End -->

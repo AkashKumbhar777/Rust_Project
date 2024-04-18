@@ -1,0 +1,58 @@
+<div>
+  <div class="box-address">
+    <div>
+      <h1>Add New Address</h1>
+
+      <!-- Create Form -->
+      <form id="form" [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <!-- Details -->
+        <!-- <div class="form-control">
+      <label>Id</label>
+      <input
+        formControlName="product_id"
+        type="number"
+        name="product_id"
+        placeholder="Enter Product Id"
+      />
+    </div> -->
+        <div class="form-control">
+          <label>address_line1</label>
+          <input formControlName="address_line1" type="text" name="address_line1" placeholder="Enter address_line1" />
+        </div>
+
+        <div class="form-control">
+          <label>address_line2</label>
+          <input formControlName="address_line2" type="text" name="address_line2" placeholder="Enter address_line2 " />
+        </div>
+
+        <div class="form-control">
+          <label>city</label>
+          <input formControlName="city" type="text" name="city" placeholder="Enter city" />
+        </div>
+
+        <div class="form-control">
+          <label>add_state </label>
+          <input formControlName="add_state" type="text" name="add_state" placeholder="Enter add_state" />
+        </div>
+
+
+        <div class="form-control">
+          <label>postal code</label>
+          <input formControlName="postal_code" type="text" name="postal_code" placeholder="Enter postal_code " />
+        </div>
+
+        <div class="form-control">
+          <label>country</label>
+          <input formControlName="country" type="text" name="country" placeholder="Enter country " />
+        </div>
+
+        <p class="err-msg"> productMsg </p>
+
+        <button class="form-button">Submit</button>
+      </form>
+
+
+
+    </div>
+  </div>
+</div>

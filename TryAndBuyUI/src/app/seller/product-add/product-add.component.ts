@@ -24,7 +24,7 @@ export class ProductAddComponent {
   })
   onSubmit(){
     console.log(this.productForm);
-    let productData = this.productForm!.value as Products
+    let productData = this.productForm.value as Products
     this.productService.createProduct(productData).subscribe(
       (res: any) => {
         console.log(res);

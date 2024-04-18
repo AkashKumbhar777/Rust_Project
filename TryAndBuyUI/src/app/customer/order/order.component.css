@@ -1,0 +1,57 @@
+.view-container{
+    margin: 1%;
+}
+
+.view-container h1{
+    display: flex;
+    justify-content: center;
+    color: rgb(154, 96, 109);
+    font-size: 50px;
+    font-family: "Poppins", sans-serif;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #ddd;
+  margin-top: 1%;
+}
+
+th,
+td {
+  text-align: center;
+  padding: 16px;
+  border: 1px solid rgb(221, 160, 177);
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+img{
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.icon{
+  color: rgb(154, 94, 105);
+}
+
+.cancel-order{
+  padding: 5px;
+  background-color: #7e425d;
+  color: white;
+  cursor: pointer;
+}
+
+.order-presence h2{
+  margin-top: 150px;
+  margin-bottom: 50px;
+  color: #a64f69;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 2rem;
+}

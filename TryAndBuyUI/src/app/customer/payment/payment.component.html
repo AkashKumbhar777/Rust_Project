@@ -1,54 +1,152 @@
-<div class="three-quarters-width">
-    <div class="cart-container">
-        <table id="cart">
-            <thead>
-                <tr>
-                    <th class="header">Image</th>
-                    <th class="header">Product</th>
-                    <th class="header">Qty</th>
-                    <th class="header">Price</th>
-                    <th class="header">&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- shopping cart contents -->
-                <tr class="product-item" *ngFor="let item of totalProducts">
-                    <td><img src="{{ item.image }}" class="product-image"></td>
-                    <td>{{ item.title }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>$ {{ item.price }}</td>
-                    <td><button class="remove-button" routerLink="/product-details/{{item?._id}}">Remove</button></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div>
-        <div class="payment-detail">
-            <h2 >Total payment</h2>
-            <h4>{{quantity}} * {{selectedProduct.price}} = {{totalpayment}}</h4>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>EShopper - Bootstrap Shop Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="../../css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-secondary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+            <h1 class="font-weight-semi-bold text-uppercase mb-3">Buy Cart</h1>
+            <div class="d-inline-flex">
+                <p class="m-0"><a routerLink="/">Home</a></p>
+                <p class="m-0 px-2">-</p>
+                <p class="m-0">Shop Detail</p>
+            </div>
         </div>
     </div>
-    <!-- <div class="payment-details">
-        <h2>Payment Details</h2>
-        <form class="payment-form">
-            <div class="form-group">
-                <label for="card-number">Card Number:</label>
-                <input type="text" id="card-number" name="card-number" placeholder="Enter card number">
+    <!-- Page Header End -->
+
+    <!-- buycart Detail Start -->
+    <div class="container-fluid pt-5">
+        <div class="row px-xl-5">
+            <div class="col-lg-8 table-responsive mb-5">
+                <table class="table table-bordered text-center mb-0">
+                    <thead class="bg-secondary text-dark">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Remove</th>
+                        </tr>
+                    </thead>
+                    <tbody class="align-middle">
+                        <tr>
+                            <td class="align-middle"><img src="{{ selectedProduct.image_url }}" alt=""
+                                    style="width: 50px;"> {{selectedProduct.product_name}}</td>
+                            <td class="align-middle">{{selectedProduct.price}}</td>
+                            <td class="align-middle">
+                                <div class="input-group quantity mx-auto" style="width: 100px;">
+                                    <div class="input-group-btn" *ngIf="!removeCartLink">
+                                        <button class="btn btn-sm btn-primary btn-minus"
+                                            (click)="handleQuantity('min')"><i class="fa fa-minus"></i></button>
+                                    </div>
+                                    <input type="text" class="form-control form-control-sm bg-secondary text-center"
+                                        value="{{productQuantity}}">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-primary btn-plus"
+                                            (click)="handleQuantity('plus')"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{totalpayment}}</td>
+                            <td class="align-middle"><button class="btn btn-sm btn-primary"
+                                    (click)="removeFromAllCart(selectedProduct.product_id )"><i
+                                        class="fa fa-times"></i></button></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="form-group">
-                <label for="expiry-date">Expiry Date:</label>
-                <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY">
+            <button type="submit" class="pay-now-button"
+                (click)="redirectToGoogle(selectedProduct.product_id,totalpayment,productQuantity)">Add Address</button>
+            <div class="box-container" [class.show]="showAddressDetails">
+                <div class="box" *ngFor="let item of AllAddresses; let i = index">
+                    <div [class.selected]="selectedAddressIndex === i" (click)="selectAddress(i)">
+                        <h6>{{item.address_line1}}, {{item.address_line2}}, {{item.city}}</h6>
+                        <h6>{{item.add_state}}. {{item.postal_code}}</h6>
+                        <h6>{{item.country}}</h6>
+                        <input type="radio" id="{{item.address_id}}" name="address" value="{{item.address_id}}"
+                            [(ngModel)]="selectedAddressId">
+                    </div>
+                </div>
+                <br> <br>
             </div>
-            <div class="form-group">
-                <label for="cvv">CVV:</label>
-                <input type="text" id="cvv" name="cvv" placeholder="CVV">
+
+            <div class="col-lg-4">
+
+                <div class="card border-secondary mb-5">
+                    <div class="card-header bg-secondary border-0">
+                        <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">Subtotal</h6>
+                            <h6 class="font-weight-medium">{{totalpayment}}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Shipping</h6>
+                            <h6 class="font-weight-medium">100</h6>
+                        </div>
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 class="font-weight-bold">Total</h5>
+                            <h5 class="font-weight-bold">{{total}}</h5>
+                        </div>
+                        <button class="btn btn-block btn-primary my-3 py-3" (click)="paynow()">Proceed To
+                            Checkout</button>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="billing-address">Billing Address:</label>
-                <textarea id="billing-address" name="billing-address" placeholder="Enter billing address"></textarea>
-            </div>
-            <button type="submit">Pay Now</button>
-        </form>
-    </div> -->
-    <button type="submit" (click)="redirectToGoogle()">Pay Now</button>
-</div>
+        </div>
+
+    </div>
+    <!-- Ca Detail End -->
+
+
+
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="../https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="../lib/easing/easing.min.js"></script>
+    <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="../../mail/jqBootstrapValidation.min.js"></script>
+    <script src="../../mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="../../js/main.js"></script>
+</body>
+
+</html>
