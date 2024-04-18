@@ -10,13 +10,8 @@ pub struct Product {
     pub product_description: Option<String>,
     pub price: f64,
     pub image_url: Option<String>,
-<<<<<<< HEAD
-    pub specifications: Option<String>,
-    pub categary:String,
-=======
     pub specifications: Option<Value>,
     pub category: Option<String>,
->>>>>>> akash
     pub created_at: String,
     pub updated_at: String,
 }
