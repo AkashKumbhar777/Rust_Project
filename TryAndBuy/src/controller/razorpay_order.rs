@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 use reqwest::Client;
 use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION, CONTENT_TYPE };
 extern crate base64;
-use base64::{encode, decode};
+// use base64::{encode, decode};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct RazorpayOrderRequest {

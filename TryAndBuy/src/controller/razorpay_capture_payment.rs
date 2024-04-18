@@ -2,10 +2,10 @@ use actix_web::{web, HttpResponse};
 use serde::{Deserialize, Serialize};
 use reqwest::Client;
 use reqwest::header::{HeaderMap, HeaderValue, AUTHORIZATION, CONTENT_TYPE };
-use crate::model::user::User; // Assuming you have a User model
-use crate::controller::user_handler::get_user_by_id; // Assuming you have a function to get user by ID
+// use crate::model::user::User; // Assuming you have a User model
+// use crate::controller::user_handler::get_user_by_id; // Assuming you have a function to get user by ID
 extern crate base64;
-use base64::{encode, decode};
+// use base64::{encode, decode};
 //  use actix_web::http::StatusCode;
 use reqwest::StatusCode;
    

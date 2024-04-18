@@ -8,3 +8,4 @@ pub mod order_handler;
 pub mod razorpay_order ;
 pub mod razorpay_capture_payment ;
 pub mod razorpay_fetch_paymentinfo ;
+pub mod razorpay_create_payment ;

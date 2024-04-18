@@ -1,6 +1,8 @@
-use actix_web::{web, HttpResponse, Responder};
+use actix_web::{web, HttpResponse, Responder ,error::ErrorInternalServerError};
 use sqlx::PgPool;
-use crate::model::user::User; // Assuming the User struct is defined in the same module as Product
+use crate::model::user::User; 
+use std::io::Write;
+
 
 pub async fn create_user(user_input: web::Json<User>, pool: web::Data<PgPool>) -> impl Responder {
     let new_user_input = user_input.into_inner();
@@ -134,3 +136,67 @@ pub async fn delete_user(user_id: web::Path<i32>, pool: web::Data<PgPool>) -> im
     }
 }
 
+
+
+
+// pub async fn update_profile_picture(
+//     user_id: web::Path<i32>,
+//     profile_picture: web::Bytes,
+//     pool: web::Data<PgPool>
+// ) -> impl Responder{
+
+//     let user_id = user_id.into_inner();
+
+//     // Convert web::Bytes into a Vec<u8>
+//     let mut picture_data: Vec<u8> = Vec::new();
+//     picture_data.write_all(&profile_picture)?;
+
+//     // Prepare the query to update the profile picture
+//     let result = sqlx::query(
+//         "UPDATE user_table
+//          SET profile_picture = $1
+//          WHERE user_id = $2")
+//         .bind(&picture_data)
+//         .bind(&user_id)
+//         .execute(pool.as_ref())
+//         .await;
+
+//     // Return appropriate response based on the query result
+//     match result {
+//         Ok(_) => HttpResponse::Ok().finish(),
+//         Err(_) => HttpResponse::InternalServerError().finish().into(),
+//     }
+// }
+
+
+
+pub async fn update_profile_picture(
+    user_id: web::Path<i32>,
+    profile_picture: web::Bytes,
+    pool: web::Data<PgPool>
+) -> Result<impl Responder, actix_web::Error> {
+
+    let user_id = user_id.into_inner();
+
+    // Convert web::Bytes into a Vec<u8>
+    let mut picture_data: Vec<u8> = Vec::new();
+    if let Err(err) = picture_data.write_all(&profile_picture) {
+        return Err(ErrorInternalServerError(format!("Failed to write profile picture data: {}", err)));
+    }
+
+    // Prepare the query to update the profile picture
+    let result = sqlx::query(
+        "UPDATE user_table
+         SET profile_picture = $1
+         WHERE user_id = $2")
+        .bind(&picture_data)
+        .bind(&user_id)
+        .execute(pool.as_ref())
+        .await;
+
+    // Return appropriate response based on the query result
+    match result {
+        Ok(_) => Ok(HttpResponse::Ok().finish()),
+        Err(_) => Err(ErrorInternalServerError("Failed to update profile picture")),
+    }
+}
