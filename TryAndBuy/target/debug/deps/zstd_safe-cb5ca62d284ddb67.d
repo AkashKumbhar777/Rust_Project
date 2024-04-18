@@ -1,0 +1,8 @@
+/Users/apple/Desktop/Connect Tushar/Rust_Project/TryAndBuy/target/debug/deps/libzstd_safe-cb5ca62d284ddb67.rmeta: /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-safe-7.1.0/src/lib.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-safe-7.1.0/src/constants.rs
+
+/Users/apple/Desktop/Connect Tushar/Rust_Project/TryAndBuy/target/debug/deps/libzstd_safe-cb5ca62d284ddb67.rlib: /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-safe-7.1.0/src/lib.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-safe-7.1.0/src/constants.rs
+
+/Users/apple/Desktop/Connect Tushar/Rust_Project/TryAndBuy/target/debug/deps/zstd_safe-cb5ca62d284ddb67.d: /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-safe-7.1.0/src/lib.rs /Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-safe-7.1.0/src/constants.rs
+
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-safe-7.1.0/src/lib.rs:
+/Users/apple/.cargo/registry/src/index.crates.io-6f17d22bba15001f/zstd-safe-7.1.0/src/constants.rs:

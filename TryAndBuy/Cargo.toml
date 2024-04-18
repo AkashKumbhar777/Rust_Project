@@ -17,4 +17,6 @@ tokio = { version = "1", features = ["full"] } # Asynchronous runtime
 dotenv = "0.15.0" # To read .env files for environment variables
 serde_json ="1.0"
 bigdecimal = "0.4.3"
+razorpay = "0.3.3"
 chrono = "0.4.37"
+base64 = "0.13"

@@ -8,6 +8,7 @@ mod controller;
 mod db_connect;
 mod model;
 
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let pool= get_pool().await.expect("Failed to Create Pool");
@@ -68,6 +69,8 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("orders/{uid}").route(web::get().to(controller::order_handler::get_orders_by_userid)))
             .service(web::resource("order/update/{id}").route(web::put().to(controller::order_handler::update_order)))
             .service(web::resource("order/delete/{id}").route(web::delete().to(controller::order_handler::delete_order)))
+
+            .service(web::resource("razorpay/create_order").route(web::post().to(controller::razorpay_order::create_order)))
 
 
     })
