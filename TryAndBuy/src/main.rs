@@ -71,6 +71,8 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("order/delete/{id}").route(web::delete().to(controller::order_handler::delete_order)))
 
             .service(web::resource("razorpay/create_order").route(web::post().to(controller::razorpay_order::create_order)))
+            .service(web::resource("/capture_payment/{payment_id}").route(web::post().to(controller::razorpay_capture_payment::capture_payment)))
+    
 
 
     })
