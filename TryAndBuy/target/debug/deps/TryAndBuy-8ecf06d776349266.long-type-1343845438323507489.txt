@@ -1,0 +1,1 @@
+(dyn actix_service::Service<ServiceRequest, Error = actix_web::Error, Future = impl Future<Output = Result<ServiceResponse, Error>>, Response = ServiceResponse> + 'static)

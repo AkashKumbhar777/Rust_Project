@@ -3,7 +3,7 @@ use actix_web::http::header;
 use actix_cors::Cors;
 use std::convert::TryInto;
 use crate::db_connect::db::get_pool;
-use crate::controller::auth::authenticate;
+use crate::controller::auth::{authenticate, authentication_middleware};
 mod controller;
 mod db_connect;
 mod model;
@@ -24,7 +24,7 @@ async fn main() -> std::io::Result<()> {
         let cors_headers_clone = cors_headers.clone();
         let cors = Cors::default()
             .allow_any_origin()
-            .allowed_methods(vec!["GET", "POST", "PUT","DELETE"])
+            .allowed_methods(vec!["GET", "POST", "PUT","DELETE","PUT","DELETE"])
             .allowed_headers(cors_headers_clone)
             .max_age(3600);
 
@@ -38,7 +38,6 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/admin/products/{product_id}").route(web::put().to(controller::admin::update_product)))
             .service(web::resource("/admin/productss/{product_id}").route(web::delete().to(controller::admin::delete_product)))
 
-            .service(web::resource("/user").route(web::post().to(controller::user_handler::create_user))) //user handler
             .service(web::resource("/users").route(web::get().to(controller::user_handler::get_users)))
             .service(web::resource("/user/{id}").route(web::get().to(controller::user_handler::get_user_by_id)))
             .service(web::resource("/user/update/{id}").route(web::put().to(controller::user_handler::update_user)))

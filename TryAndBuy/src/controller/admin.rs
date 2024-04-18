@@ -1,8 +1,10 @@
 use actix_web::{web, HttpResponse, Responder};
-use sqlx:: PgPool;
+use sqlx::PgPool;
 use crate::model::product::Product;
-// use crate::model::models::Product;
+use crate::controller::sql_helper::{get, delete}; 
 
+
+// Create a product
 pub async fn create_product(product_input: web::Json<Product>, pool: web::Data<PgPool>) -> impl Responder {
     let new_product_input = product_input.into_inner();
 println!("Inside create_product");
@@ -26,11 +28,9 @@ println!("Inside create_product");
 }
 
 
+// Get all products
 pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
-    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at FROM product")
-        .fetch_all(pool.as_ref())
-        .await
-    {
+    match get(pool.get_ref(), "product", "", &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
         Ok(products) => {
             println!("Retrieved {} products", products.len());
             HttpResponse::Ok().json(products)
@@ -42,30 +42,28 @@ pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
     }
 }
 
+// Get product by its id
 pub async fn get_product_by_product_id(
     product_id: web::Path<i32>,
     pool: web::Data<PgPool>,
 ) -> impl Responder {
     let product_id = product_id.into_inner();
-    match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at FROM product WHERE product_id = $1")
-        .bind(product_id)
-        .fetch_optional(pool.as_ref())
-        .await
-    {
-        Ok(product) => {
-            if let Some(product) = product {
+    match get(pool.get_ref(), "product", &product_id.to_string(), &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
+        Ok(products) => {
+            if let Some(product) = products.get(0) {
                 HttpResponse::Ok().json(product)
             } else {
                 HttpResponse::NotFound().body("Product not found")
             }
-        }
+        },
         Err(err) => {
             println!("Failed to retrieve product: {}", err);
             HttpResponse::InternalServerError().finish()
-        }
+        },
     }
 }
 
+// Update product by using its id
 pub async fn update_product(
     product_id: web::Path<i32>,
     product_input: web::Json<Product>,
@@ -97,21 +95,14 @@ pub async fn update_product(
     }
 }
 
-
+// Delete product
 pub async fn delete_product(
     product_id: web::Path<i32>,
     pool: web::Data<PgPool>,
 ) -> impl Responder {
     let product_id = product_id.into_inner();
-    let result = sqlx::query("DELETE FROM product WHERE product_id = $1")
-        .bind(product_id)
-        .execute(pool.as_ref())
-        .await;
-
-    match result {
+    match delete(pool.get_ref(), "product", &product_id.to_string()).await { // Call delete function from sql_helper
         Ok(_) => HttpResponse::NoContent().finish(),
         Err(_) => HttpResponse::InternalServerError().finish(),
     }
 }
-
-
