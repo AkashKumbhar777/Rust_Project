@@ -4,6 +4,7 @@ use crate::model::user::User;
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     let result = sqlx::query(
         "INSERT INTO user_table (login_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at)
@@ -25,6 +26,8 @@ use crate::model::user::User;
     }
 }
 >>>>>>> shreya
+=======
+>>>>>>> 533c6b3a365aafc6e59edcac05be3b98614c068c
 
 pub async fn get_users(pool: web::Data<PgPool>) -> impl Responder {
     match sqlx::query_as::<_, User>("SELECT user_id, first_name, last_name, email, phone, profile_picture,user_role, created_at, updated_at FROM user_table")
@@ -49,10 +52,14 @@ pub async fn get_user_by_id(
 
     match sqlx::query_as::<_, User>(
 <<<<<<< HEAD
+<<<<<<< HEAD
         "SELECT user_id, first_name, last_name, email, phone, profile_picture,user_role, created_at, updated_at
 =======
         "SELECT user_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at,user_role
 >>>>>>> shreya
+=======
+        "SELECT user_id, first_name, last_name, email, phone, profile_picture,user_role, created_at, updated_at
+>>>>>>> 533c6b3a365aafc6e59edcac05be3b98614c068c
          FROM user_table
          WHERE user_id = $1")
         .bind(&user_id)
@@ -102,6 +109,9 @@ pub async fn update_user(
     let result = sqlx::query(
         "UPDATE user_table SET
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 533c6b3a365aafc6e59edcac05be3b98614c068c
          first_name = $1,
          last_name = $2,
          email = $3,
@@ -109,6 +119,7 @@ pub async fn update_user(
          profile_picture = $5,
          updated_at = $6
          WHERE user_id = $7")
+<<<<<<< HEAD
 =======
          login_id = $1,
          first_name = $2,
@@ -120,6 +131,8 @@ pub async fn update_user(
          WHERE user_id = $8")
         // .bind(&updated_user_input.login_id)
 >>>>>>> shreya
+=======
+>>>>>>> 533c6b3a365aafc6e59edcac05be3b98614c068c
         .bind(&updated_user_input.first_name)
         .bind(&updated_user_input.last_name)
         .bind(&updated_user_input.email)

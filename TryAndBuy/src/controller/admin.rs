@@ -31,6 +31,7 @@ println!("Inside create_product");
 // Get all products
 pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
 <<<<<<< HEAD
+<<<<<<< HEAD
     match get(pool.get_ref(), "product", "", &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
 =======
     match sqlx::query_as::<_, Product>("SELECT product_id, product_name, product_description, price::FLOAT8 as price, image_url, specifications, created_at, updated_at, categary FROM product")
@@ -38,6 +39,9 @@ pub async fn get_products(pool: web::Data<PgPool>) -> impl Responder {
         .await
     {
 >>>>>>> shreya
+=======
+    match get(pool.get_ref(), "product", "", &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
+>>>>>>> 533c6b3a365aafc6e59edcac05be3b98614c068c
         Ok(products) => {
             println!("Retrieved {} products", products.len());
             HttpResponse::Ok().json(products)
@@ -56,6 +60,7 @@ pub async fn get_product_by_product_id(
 ) -> impl Responder {
     let product_id = product_id.into_inner();
 <<<<<<< HEAD
+<<<<<<< HEAD
     match get(pool.get_ref(), "product", &product_id.to_string(), &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
         Ok(products) => {
             if let Some(product) = products.get(0) {
@@ -68,6 +73,11 @@ pub async fn get_product_by_product_id(
         Ok(product) => {
             if let Some(product) = product {
 >>>>>>> shreya
+=======
+    match get(pool.get_ref(), "product", &product_id.to_string(), &["product_id", "product_name", "product_description", "price", "image_url", "specifications", "created_at", "updated_at"]).await { // Call get function from sql_helper
+        Ok(products) => {
+            if let Some(product) = products.get(0) {
+>>>>>>> 533c6b3a365aafc6e59edcac05be3b98614c068c
                 HttpResponse::Ok().json(product)
             } else {
                 HttpResponse::NotFound().body("Product not found")

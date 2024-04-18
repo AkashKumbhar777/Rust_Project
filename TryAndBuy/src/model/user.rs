@@ -12,9 +12,13 @@ pub struct User {
     pub user_role: Option<String>,
     pub created_at: String,
 <<<<<<< HEAD
+<<<<<<< HEAD
     pub updated_at: Option<String>,
 =======
     pub updated_at: String,
     pub user_role:String
 >>>>>>> shreya
+=======
+    pub updated_at: Option<String>,
+>>>>>>> 533c6b3a365aafc6e59edcac05be3b98614c068c
 }
