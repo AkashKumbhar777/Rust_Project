@@ -1,0 +1,43 @@
+{
+  "hash": "a534c44b",
+  "configHash": "25e1c392",
+  "lockfileHash": "fae0ffb4",
+  "browserHash": "b6e4198e",
+  "optimized": {
+    "@angular/common/http": {
+      "src": "../../../../../node_modules/@angular/common/fesm2022/http.mjs",
+      "file": "@angular_common_http.js",
+      "fileHash": "f0a0a826",
+      "needsInterop": false
+    },
+    "@angular/core": {
+      "src": "../../../../../node_modules/@angular/core/fesm2022/core.mjs",
+      "file": "@angular_core.js",
+      "fileHash": "c93b677d",
+      "needsInterop": false
+    },
+    "@angular/platform-browser": {
+      "src": "../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
+      "file": "@angular_platform-browser.js",
+      "fileHash": "9079dca0",
+      "needsInterop": false
+    },
+    "ngx-toastr": {
+      "src": "../../../../../node_modules/ngx-toastr/fesm2022/ngx-toastr.mjs",
+      "file": "ngx-toastr.js",
+      "fileHash": "aa325905",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-HY5I7V3F": {
+      "file": "chunk-HY5I7V3F.js"
+    },
+    "chunk-RHMSP7T4": {
+      "file": "chunk-RHMSP7T4.js"
+    },
+    "chunk-3SY6KJM2": {
+      "file": "chunk-3SY6KJM2.js"
+    }
+  }
+}
