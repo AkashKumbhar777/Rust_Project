@@ -8,6 +8,7 @@ mod controller;
 mod db_connect;
 mod model;
 
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let pool= get_pool().await.expect("Failed to Create Pool");
@@ -43,6 +44,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("/user/update/{id}").route(web::put().to(controller::user_handler::update_user)))
             .service(web::resource("/user/delete/{id}").route(web::delete().to(controller::user_handler::delete_user)))
             .service(web::resource("/userbyemail/{email}").route(web::get().to(controller::user_handler::get_user_by_email)))
+            .service(web::resource("/user/updatephoto/{id}").route(web::put().to(controller::user_handler::update_profile_picture)))
 
             .service(web::resource("/trycart").route(web::post().to(controller::trycart_handler::create_trycart)))//trycart handler
             .service(web::resource("/trycarts").route(web::get().to(controller::trycart_handler::get_all_trycarts))) 
@@ -67,6 +69,12 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("orders/{uid}").route(web::get().to(controller::order_handler::get_orders_by_userid)))
             .service(web::resource("order/update/{id}").route(web::put().to(controller::order_handler::update_order)))
             .service(web::resource("order/delete/{id}").route(web::delete().to(controller::order_handler::delete_order)))
+
+            .service(web::resource("razorpay/create_order").route(web::post().to(controller::razorpay_order::create_order)))
+            .service(web::resource("/capture_payment/{payment_id}").route(web::post().to(controller::razorpay_capture_payment::capture_payment)))
+            .service(web::resource("/fetch_payment/{payment_id}").route(web::get().to(controller::razorpay_fetch_paymentinfo::fetch_payment)))
+            .service(web::resource("/create_payment").route(web::post().to(controller::razorpay_create_payment::create_payment)))
+    
 
 
     })
