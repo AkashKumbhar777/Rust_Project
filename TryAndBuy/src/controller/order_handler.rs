@@ -19,14 +19,14 @@ pub struct OrderWithDetails {
 
 pub async fn create_order(order : web::Json<Order> , pool : web::Data<PgPool>) -> impl Responder {
     let new_order = order.into_inner()  ;
-    let result = sqlx::query("Insert into orders(user_id,product_id,order_status,order_date,total_amount,address_id)
-    VALUES($1,$2,$3,$4,$5,$6)")
+    let result = sqlx::query("Insert into orders(user_id,product_id,order_status,order_date,total_amount)
+    VALUES($1,$2,$3,$4,$5)")
     .bind(&new_order.user_id)
     .bind(&new_order.product_id)
     .bind(&new_order.order_status)
     .bind(&new_order.order_date)
     .bind(&new_order.total_amount)
-    .bind(&new_order.address_id)
+    // .bind(&new_order.address_id)
     .execute(pool.as_ref())
     .await;
 

@@ -75,6 +75,12 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("order/delete/{id}").route(web::delete().to(controller::order_handler::delete_order)))
             .service(web::resource("/order/details").route(web::get().to(controller::order_handler::get_orders_with_details)))
 
+            .service(web::resource("/return").route(web::post().to(controller::return_refund::create_refund_return)))//return refund handler
+            .service(web::resource("/returns").route(web::get().to(controller::return_refund::get_all_refund_returns))) 
+            .service(web::resource("/return/{id}").route(web::get().to(controller::return_refund::get_refund_return_by_id)))
+            .service(web::resource("/return/update/{id}").route(web::put().to(controller::return_refund::update_refund_return)))
+            .service(web::resource("/return/delete/{id}").route(web::delete().to(controller::return_refund::delete_refund_return)))
+
             .service(web::resource("/sales/get_total_sales").route(web::get().to(controller::sales_track::track_total_sale)))
             .service(web::resource("/sales/total_revenue_today").route(web::get().to(controller::sales_track::total_revenue_today)))
             .service(web::resource("/sales/get_monthly_revenue/{month}").route(web::get().to(controller::sales_track::total_monthly_revenue)))
@@ -89,6 +95,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("razorpay/refund/{payment_id}").route(web::post().to(controller::razorpay_refund::refund_payment)))
             .service(web::resource("/capture_payment/{payment_id}").route(web::post().to(controller::razorpay_capture_payment::capture_payment)))
             .service(web::resource("/fetch_payment/{payment_id}").route(web::get().to(controller::razorpay_fetch_paymentinfo::fetch_payment)))
+            .service(web::resource("/paymentdetails/{order_id}").route(web::get().to(controller::razorpay_payment_details_by_orderid::fetch_payment_by_order_id)))
             .service(web::resource("/create_payment").route(web::post().to(controller::razorpay_create_payment::create_payment)))
 
 
