@@ -39,27 +39,55 @@ pub async fn get_user_by_id(
     }
 }
 
+// pub async fn get_user_by_email(
+//     email: web::Path<String>, // Assuming email is a String type
+//     pool: web::Data<PgPool>
+// ) -> impl Responder {
+//     let email = email.into_inner();
+
+
+//     println!("Email = {:?}\n\n", email);
+
+//     match sqlx::query_as::<_, User>(
+//         "SELECT user_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at,user_role
+//          FROM user_table
+//          WHERE email = $1")
+//         .bind(&email)
+//         .fetch_optional(pool.as_ref())
+//         .await
+//     {
+//         Ok(Some(user)) => HttpResponse::Ok().json(user),
+//         Ok(None) => HttpResponse::NotFound().finish(),
+//         Err(e) => {print!("e={:?}",e);
+//             HttpResponse::InternalServerError().finish()
+//         },
+//     }
+// }
 pub async fn get_user_by_email(
-    email: web::Path<String>, // Assuming email is a String type
+    email: web::Path<String>,
     pool: web::Data<PgPool>
 ) -> impl Responder {
     let email = email.into_inner();
 
     match sqlx::query_as::<_, User>(
-        "SELECT user_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at,user_role
-         FROM user_table
-         WHERE email = $1")
+        "SELECT user_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at, user_role
+        FROM user_table
+        WHERE $1 = ANY($1)
+        ")
         .bind(&email)
         .fetch_optional(pool.as_ref())
         .await
     {
         Ok(Some(user)) => HttpResponse::Ok().json(user),
         Ok(None) => HttpResponse::NotFound().finish(),
+        // Err(_) => HttpResponse::InternalServerError().finish(),
         Err(e) => {print!("e={:?}",e);
-            HttpResponse::InternalServerError().finish()
-        },
+                    HttpResponse::InternalServerError().finish()
+                },
     }
 }
+
+
 
 
 

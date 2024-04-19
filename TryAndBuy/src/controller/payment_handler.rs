@@ -1,10 +1,10 @@
 use actix_web::{web, HttpResponse, Responder};
 use sqlx::PgPool;
-use crate::model::payment::Payment; // Assuming the Payments struct is defined in the same module as the handler
+use crate::model::payment::Payment; // Assuming the Payment struct is defined in the same module as the handler
 
 // Create Payment
 pub async fn create_payment(
-    payment_input: web::Json<Payments>,
+    payment_input: web::Json<Payment>,
     pool: web::Data<PgPool>
 ) -> impl Responder {
     let new_payment_input = payment_input.into_inner();
@@ -26,9 +26,9 @@ pub async fn create_payment(
     }
 }
 
-// Get all Payments
+// Get all Payment
 pub async fn get_all_payments(pool: web::Data<PgPool>) -> impl Responder {
-    match sqlx::query_as::<_, Payments>(
+    match sqlx::query_as::<_, Payment>(
         "SELECT reciept_no, user_id, order_id, payment_id, currency, total_amount, payment_status
          FROM payments")
         .fetch_all(pool.as_ref())
@@ -46,7 +46,7 @@ pub async fn get_payment_by_receipt_number(
 ) -> impl Responder {
     let receipt_no = receipt_no.into_inner();
 
-    match sqlx::query_as::<_, Payments>(
+    match sqlx::query_as::<_, Payment>(
         "SELECT reciept_no, user_id, order_id, payment_id, currency, total_amount, payment_status
          FROM payments
          WHERE reciept_no = $1")
@@ -63,7 +63,7 @@ pub async fn get_payment_by_receipt_number(
 // Update Payment
 pub async fn update_payment(
     receipt_no: web::Path<i32>,
-    payment_input: web::Json<Payments>,
+    payment_input: web::Json<Payment>,
     pool: web::Data<PgPool>
 ) -> impl Responder {
     let receipt_no = receipt_no.into_inner();

@@ -7,3 +7,4 @@ pub mod order;
 pub mod refund_return;
 pub mod sales_history;
 pub mod try_cart;
+pub mod payment;

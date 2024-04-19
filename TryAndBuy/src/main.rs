@@ -91,6 +91,13 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("sales/total_orders_this_month").route(web::get().to(controller::sales_track::total_orders_this_month)))
             .service(web::resource("sales/total_orders_this_year").route(web::get().to(controller::sales_track::total_orders_this_year)))
 
+
+            .service(web::resource("/payment").route(web::post().to(controller::payment_handler::create_payment)))//address handle
+            .service(web::resource("/payments").route(web::get().to(controller::payment_handler::get_all_payments)))
+            .service(web::resource("/payment/{uid}").route(web::get().to(controller::payment_handler::get_payment_by_receipt_number)))
+            .service(web::resource("/payment/update/{id}").route(web::put().to(controller::payment_handler::update_payment)))
+            .service(web::resource("/payment/delete/{id}").route(web::delete().to(controller::payment_handler::delete_payment)))
+
             .service(web::resource("razorpay/create_order").route(web::post().to(controller::razorpay_order::create_order)))
             .service(web::resource("razorpay/refund/{payment_id}").route(web::post().to(controller::razorpay_refund::refund_payment)))
             .service(web::resource("/capture_payment/{payment_id}").route(web::post().to(controller::razorpay_capture_payment::capture_payment)))
