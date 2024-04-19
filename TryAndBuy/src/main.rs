@@ -86,6 +86,7 @@ async fn main() -> std::io::Result<()> {
             .service(web::resource("sales/total_orders_this_year").route(web::get().to(controller::sales_track::total_orders_this_year)))
 
             .service(web::resource("razorpay/create_order").route(web::post().to(controller::razorpay_order::create_order)))
+            .service(web::resource("razorpay/refund/{payment_id}").route(web::post().to(controller::razorpay_refund::refund_payment)))
             .service(web::resource("/capture_payment/{payment_id}").route(web::post().to(controller::razorpay_capture_payment::capture_payment)))
             .service(web::resource("/fetch_payment/{payment_id}").route(web::get().to(controller::razorpay_fetch_paymentinfo::fetch_payment)))
             .service(web::resource("/create_payment").route(web::post().to(controller::razorpay_create_payment::create_payment)))

@@ -19,8 +19,8 @@ pub struct PayRazorpayCaptureRequestment {
 pub async fn capture_payment(payment_id: web::Path<String> , capture_request: web::Json<PayRazorpayCaptureRequestment>) -> HttpResponse {
 
     let capture_request = capture_request.into_inner();
-    const API_KEY: &str = "rzp_test_y39gdD0Y9KbAMu";
-    const API_SECRET: &str = "RCfAdxOPzBoQDPrgj6gayevq";
+    const API_KEY: &str = "rzp_test_Mkt5dPv1PBdTQ4";
+    const API_SECRET: &str = "mG8LVjtghMlV116Ty1w2Hrd3";
 
     let auth_str = format!("{}:{}", API_KEY, API_SECRET);
     let encoded_auth = base64::encode(auth_str);

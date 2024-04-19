@@ -19,8 +19,8 @@ pub struct RazorpayCreatePaymentRequest {
 pub async fn create_payment(create_request: web::Json<RazorpayCreatePaymentRequest>) -> HttpResponse {
     let create_request = create_request.into_inner();
 
-    const API_KEY: &str = "YOUR_RAZORPAY_API_KEY";
-    const API_SECRET: &str = "YOUR_RAZORPAY_API_SECRET";
+    const API_KEY: &str = "rzp_test_Mkt5dPv1PBdTQ4";
+    const API_SECRET: &str = "mG8LVjtghMlV116Ty1w2Hrd3";
 
     let auth_str = format!("{}:{}", API_KEY, API_SECRET);
     let encoded_auth = base64::encode(auth_str);

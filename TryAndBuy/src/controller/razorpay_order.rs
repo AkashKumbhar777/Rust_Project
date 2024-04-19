@@ -29,8 +29,8 @@ pub struct RazorpayOrderResponse {
 pub async fn create_order(order_request: web::Json<RazorpayOrderRequest>) -> HttpResponse {
     let order_request = order_request.into_inner();
 
-            const API_KEY: &str = "rzp_test_y39gdD0Y9KbAMu";
-            const API_SECRET: &str = "RCfAdxOPzBoQDPrgj6gayevq";
+    const API_KEY: &str = "rzp_test_Mkt5dPv1PBdTQ4";
+    const API_SECRET: &str = "mG8LVjtghMlV116Ty1w2Hrd3";
 
             let auth_str = format!("{}:{}", API_KEY, API_SECRET);
             let encoded_auth = base64::encode(auth_str);
