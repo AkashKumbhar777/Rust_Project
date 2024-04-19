@@ -4,8 +4,6 @@ use crate::model::user::User;
 use std::io::Write;
 
 
-
-
 pub async fn get_users(pool: web::Data<PgPool>) -> impl Responder {
     match sqlx::query_as::<_, User>("SELECT user_id, first_name, last_name, email, phone, profile_picture,user_role, created_at, updated_at FROM user_table")
         .fetch_all(pool.as_ref())
@@ -48,7 +46,7 @@ pub async fn get_user_by_email(
     let email = email.into_inner();
 
     match sqlx::query_as::<_, User>(
-        "SELECT user_id, login_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at
+        "SELECT user_id, first_name, last_name, email, phone, profile_picture, created_at, updated_at,user_role
          FROM user_table
          WHERE email = $1")
         .bind(&email)
@@ -57,7 +55,9 @@ pub async fn get_user_by_email(
     {
         Ok(Some(user)) => HttpResponse::Ok().json(user),
         Ok(None) => HttpResponse::NotFound().finish(),
-        Err(_) => HttpResponse::InternalServerError().finish(),
+        Err(e) => {print!("e={:?}",e);
+            HttpResponse::InternalServerError().finish()
+        },
     }
 }
 
@@ -82,6 +82,7 @@ pub async fn update_user(
          profile_picture = $5,
          updated_at = $6
          WHERE user_id = $7")
+        // .bind(&updated_user_input.login_id)
         .bind(&updated_user_input.first_name)
         .bind(&updated_user_input.last_name)
         .bind(&updated_user_input.email)
@@ -113,70 +114,6 @@ pub async fn delete_user(user_id: web::Path<i32>, pool: web::Data<PgPool>) -> im
     }
 }
 
-
-
-
-// pub async fn update_profile_picture(
-//     user_id: web::Path<i32>,
-//     profile_picture: web::Bytes,
-//     pool: web::Data<PgPool>
-// ) -> impl Responder{
-
-//     let user_id = user_id.into_inner();
-
-//     // Convert web::Bytes into a Vec<u8>
-//     let mut picture_data: Vec<u8> = Vec::new();
-//     picture_data.write_all(&profile_picture)?;
-
-//     // Prepare the query to update the profile picture
-//     let result = sqlx::query(
-//         "UPDATE user_table
-//          SET profile_picture = $1
-//          WHERE user_id = $2")
-//         .bind(&picture_data)
-//         .bind(&user_id)
-//         .execute(pool.as_ref())
-//         .await;
-
-//     // Return appropriate response based on the query result
-//     match result {
-//         Ok(_) => HttpResponse::Ok().finish(),
-//         Err(_) => HttpResponse::InternalServerError().finish().into(),
-//     }
-// }
-
-
-
-// pub async fn update_profile_picture(
-//     user_id: web::Path<i32>,
-//     profile_picture: web::Bytes,
-//     pool: web::Data<PgPool>
-// ) -> Result<impl Responder, actix_web::Error> {
-
-//     let user_id = user_id.into_inner();
-
-//     // Convert web::Bytes into a Vec<u8>
-//     let mut picture_data: Vec<u8> = Vec::new();
-//     if let Err(err) = picture_data.write_all(&profile_picture) {
-//         return Err(ErrorInternalServerError(format!("Failed to write profile picture data: {}", err)));
-//     }
-
-//     // Prepare the query to update the profile picture
-//     let result = sqlx::query(
-//         "UPDATE user_table
-//          SET profile_picture = $1
-//          WHERE user_id = $2")
-//         .bind(&picture_data)
-//         .bind(&user_id)
-//         .execute(pool.as_ref())
-//         .await;
-
-//     // Return appropriate response based on the query result
-//     match result {
-//         Ok(_) => Ok(HttpResponse::Ok().finish()),
-//         Err(_) => Err(ErrorInternalServerError("Failed to update profile picture")),
-//     }
-// }
 
 
 pub async fn update_profile_picture(

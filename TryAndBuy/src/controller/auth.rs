@@ -1,14 +1,21 @@
-use actix_web::{web,HttpRequest, HttpResponse, Error, error::InternalError, HttpResponseBuilder, HttpMessage,http::StatusCode};
-use actix_web::dev::{ServiceRequest, ServiceResponse};
-use actix_service::Service;
+use actix_web::{web,HttpRequest, HttpResponse, error::InternalError, HttpResponseBuilder, HttpMessage,http::StatusCode};
+use actix_web::{dev::{Service, ServiceRequest, ServiceResponse, Transform}, Error};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use reqwest::Client;
 use crate::model::user::User;
 use crate::db_connect::db::get_pool;
 use base64::decode as base64_decode;
-use std::future::Future;
-use actix_web::web::Data;
-use std::sync::Arc;
+use jsonwebtoken::{decode, DecodingKey, Validation, Algorithm};
+use futures::future::{ok as future_ok, Ready, LocalBoxFuture,Either, Future};
+use std::{
+    collections::HashMap,
+    rc::Rc,
+    task::{Context, Poll},
+};
+use std::pin::Pin;
+use actix_web::http::header::AUTHORIZATION;
+
 
 #[derive(Deserialize)]
 pub struct AuthCode {
@@ -176,45 +183,140 @@ pub async fn save_user_info_to_database(user_info: &User) -> Result<User, Error>
 
 
 
-pub async fn authentication_middleware(
-    srv: ServiceRequest,
-    next: impl Service<ServiceRequest, Response = ServiceResponse, Error = Error, Future = impl Future<Output = Result<ServiceResponse, Error>>> + 'static,
-) -> Result<ServiceResponse, Error> {
-    // Extract the JWT token from the request headers
-    let authorization_header = srv.headers().get("Authorization");
-    let jwt_token = match authorization_header {
-        Some(header_value) => {
-            match header_value.to_str() {
-                Ok(token_str) => {
-                    if token_str.starts_with("Bearer ") {
-                        Some(token_str.trim_start_matches("Bearer ").to_owned())
-                    } else {
-                        None
-                    }
-                },
-                Err(_) => None,
-            }
-        },
-        None => None,
-    };
+// pub async fn authentication_middleware(
+//     req: HttpRequest,
+//     next: impl FnOnce(HttpRequest) -> Ready<Result<ServiceResponse, Error>> + 'static,
+// ) -> Result<ServiceResponse, Error> {
+//     // Extract the JWT token from the request headers
+//     let authorization_header = req.headers().get("Authorization");
+//     let jwt_token = match authorization_header {
+//         Some(header_value) => {
+//             match header_value.to_str() {
+//                 Ok(token_str) => {
+//                     if token_str.starts_with("Bearer ") {
+//                         Some(token_str.trim_start_matches("Bearer ").to_owned())
+//                     } else {
+//                         None
+//                     }
+//                 },
+//                 Err(_) => None,
+//             }
+//         },
+//         None => None,
+//     };
 
-    // Validate the JWT token and fetch user information
-    let user_info = match jwt_token {
-        Some(token) => fetch_user_info(&token).await,
-        None => return Err(actix_web::error::ErrorUnauthorized("No JWT token provided")),
-    };
+//     // Validate the JWT token and fetch user information
+//     let user_info = match jwt_token {
+//         Some(token) => fetch_user_info(&token).await,
+//         None => return Err(actix_web::error::ErrorUnauthorized("No JWT token provided")),
+//     };
 
-    match user_info {
-        Ok(user_info) => {
-            // Attach user information to the request for use in route handlers
-            srv.extensions_mut().insert(user_info);
-            // Proceed with the request
-            let res = next.call(srv).await;
-            res
-        },
-        Err(_) => {
-            // If user info is not successfully obtained, return an Unauthorized response
-            Err(actix_web::error::ErrorUnauthorized("Unauthorized"))
-        }
-    }
-}
+//     match user_info {
+//         Ok(user_info) => {
+//             // Attach user information to the request for use in route handlers
+//             req.extensions_mut().insert(user_info);
+//             // Proceed with the request
+//             next(req).await
+//         },
+//         Err(_) => {
+//             // If user info is not successfully obtained, return an Unauthorized response
+//             Err(actix_web::error::ErrorUnauthorized("Unauthorized"))
+//         }
+//     }
+// }
+
+
+// pub async fn authentication_middleware(
+//     req: HttpRequest,
+//     next: impl FnOnce(HttpRequest) -> Ready<Result<ServiceResponse, Error>> + 'static,
+// ) -> Result<ServiceResponse, Error> {
+//     let middleware = JwtAuthMiddleware::new("your_secret_key".to_string(), Algorithm::HS256);
+
+//     match middleware.check_token(req) {
+//         Ok(token_data) => {
+//             let user_info = fetch_user_info(&token_data.token)?;
+
+//             req.extensions_mut().insert(user_info);
+//             next(req).await
+//         },
+//         Err(e) => {
+//             Err(actix_web::error::ErrorUnauthorized(format!("Unauthorized: {}", e)))
+//         }
+//     }
+// }
+
+
+
+// pub struct AuthenticationMiddleware;
+
+// impl<S, B> Transform<S, ServiceRequest> for AuthenticationMiddleware
+// where
+//     S: Service<Request = ServiceRequest, Response = ServiceResponse<B>, Error = Error> + 'static,
+//     B: 'static,
+// {
+//     type Response = ServiceResponse<B>;
+//     type Error = Error;
+//     type Transform = AuthenticationMiddlewareService<S>;
+//     type InitError = ();
+//     type Future = Ready<Result<Self::Transform, Self::InitError>>;
+
+//     fn new_transform(&self, service: S) -> Self::Future {
+//         future_ok(AuthenticationMiddlewareService {
+//             service: Rc::new(RefCell::new(service)),
+//         })
+//     }
+// }
+
+// pub struct AuthenticationMiddlewareService<S> {
+//     service: Rc<RefCell<S>>,
+// }
+
+// impl<S, B> Service for AuthenticationMiddlewareService<S>
+// where
+//     S: Service<Request = ServiceRequest, Response = ServiceResponse<B>, Error = Error> + 'static,
+//     B: 'static,
+// {
+//     type Request = ServiceRequest;
+//     type Response = ServiceResponse<B>;
+//     type Error = Error;
+//     type Future = LocalBoxFuture<'static, Result<Self::Response, Self::Error>>;
+
+//     fn poll_ready(&mut self, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
+//         self.service.borrow_mut().poll_ready(cx)
+//     }
+
+//     fn call(&mut self, req: ServiceRequest) -> Self::Future {
+//         let token = req
+//             .headers()
+//             .get("Authorization")
+//             .and_then(|header_value| header_value.to_str().ok())
+//             .and_then(|header_str| header_str.strip_prefix("Bearer "))
+//             .map(|token| token.to_string());
+
+//         match token {
+//             Some(token) => {
+//                 let decoding_key = DecodingKey::from_secret("your_secret_key".as_ref()); // Replace "your_secret_key" with your actual secret key
+//                 let validation = Validation::new(Algorithm::HS256);
+
+//                 match decode::<TokenClaims>(&token, &decoding_key, &validation) {
+//                     Ok(_token_data) => {
+//                         // Token is valid, proceed with the request
+//                         let fut = self.service.borrow_mut().call(req);
+//                         Box::pin(async move {
+//                             let res = fut.await?;
+//                             Ok(res)
+//                         })
+//                     },
+//                     Err(_) => {
+//                         // Token is invalid, return an error
+//                         Box::pin(async { Err(Error::from(actix_web::error::ErrorUnauthorized("Invalid token"))) })
+//                     }
+//                 }
+//             },
+//             None => {
+//                 // Token not found, return an error
+//                 Box::pin(async { Err(Error::from(actix_web::error::ErrorUnauthorized("No token found"))) })
+//             }
+//         }
+//     }
+// }

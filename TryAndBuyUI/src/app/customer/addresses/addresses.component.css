@@ -1,0 +1,45 @@
+.box-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px;
+  margin:10px;
+  flex:  1;
+}
+
+.box {
+  flex: 0 1 calc(33.33% - 20px); /* Adjust as needed */
+  background-color: #d8e6f0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  padding: 20px;
+  margin:10px
+}
+
+.box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.address {
+  margin-bottom: 15px;
+}
+
+.box h6 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.box h6:first-child {
+  font-weight: bold;
+  color: #222;
+}
+
+/* Styling the Form (Color, Padding, Shadow) */
+
+

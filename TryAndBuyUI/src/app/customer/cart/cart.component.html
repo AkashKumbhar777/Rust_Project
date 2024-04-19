@@ -1,53 +1,104 @@
-<div id="w">
-    <header id="title">
-      <div class="heading-img">
-        <h1>Cart</h1>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>EShopper - Bootstrap Shop Template</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Free HTML Templates" name="keywords">
+  <meta content="Free HTML Templates" name="description">
+
+  <!-- Favicon -->
+  <link href="img/favicon.ico" rel="icon">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Libraries Stylesheet -->
+  <link href="../../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+  <!-- Customized Bootstrap Stylesheet -->
+  <link href="../../css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+
+
+  <!-- Page Header Start -->
+  <div class="container-fluid bg-secondary mb-5">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+      <h1 class="font-weight-semi-bold text-uppercase mb-3">Cart</h1>
+      <div class="d-inline-flex">
+        <p class="m-0"><a routerLink="/">Home</a></p>
+        <p class="m-0 px-2">-</p>
+        <p class="m-0">Shop Detail</p>
       </div>
-    </header>
-    <div id="page">
-      <table id="cart">
-        <thead>
-          <tr>
-            <th class="first">Image</th>
-            <th class="third">Product</th>
-            <th class="second">Qty</th>
-            <th class="fourth">Price</th>
-            <th class="fifth">&nbsp;</th>
-            
-          </tr>
-        </thead>
-        <tbody>
-          <!-- shopping cart contents -->
-          <tr class="productitm" *ngFor="let item of selectedProducts" >
-            <!-- http://www.inkydeals.com/deal/ginormous-bundle/ -->
-            <td><img src="{{item.image}}" class="thumb"></td>
-            <td>{{item.title}}</td>
-            <td>{{item.quantity}}</td>
-            <td>{{item.price}}</td>
-            <td ><span class="remove" (click)="removeFromCart(item._id)"><img src="https://i.imgur.com/h1ldGRr.png" alt="X"></span></td>
-            
-          </tr> 
-        <!-- tax + subtotal -->
-          <tr class="extracosts">
-            <td class="light">Shipping &amp; Tax</td>
-            <td colspan="2" class="light"></td>
-            <td style="color: wheat;">{{this.priceSummary.tax}} + {{this.priceSummary.delivery}}</td>
-            <td>&nbsp;</td>
-           
-          </tr>
-          <tr class="totalprice">
-            <td class="light">Total:</td>
-            <td colspan="2">&nbsp;</td>
-            <td colspan="2"><span class="thick">{{this.priceSummary.total}}</span></td>
-          </tr>
-          
-          <!-- checkout btn -->
-          <tr class="checkoutrow">
-            <td colspan="5" ><button id="submitbtn" class="checkout" (click)="checkoutOrder()">Checkout Now!</button></td>
-          </tr>
-          
-        </tbody>
-      </table>
     </div>
   </div>
+  <!-- Page Header End -->
 
+
+  <!-- Cart Detail Start -->
+
+  <div class="container-fluid pt-5">
+    <div class="row px-xl-5">
+      <div class="col-lg-8 table-responsive mb-5">
+        <table class="table table-bordered text-center mb-0">
+          <thead class="bg-secondary text-dark">
+            <tr>
+              <th>Products</th>
+              <th>Price</th>
+              <th>Buy</th>
+              <th>Remove</th>
+            </tr>
+          </thead>
+          <tbody class="align-middle">
+            <tr *ngFor="let item of selectedProduct">
+              <td class="align-middle"><img src="{{item.image_url}}" alt="" style="width: 50px;"> {{item.product_name}}
+              </td>
+              <td class="align-middle">{{item.price}}</td>
+              <td class="align-middle">
+                <div class="input-group-btn">
+                  <button class="btn btn-sm btn-primary btn-plus" (click)="addToBuyCart(item.product_id)">Buy
+                  </button>
+                </div>
+              </td>
+              <td class="align-middle"><button class="btn btn-sm btn-primary"
+                  (click)="removeFromCart(item.product_id)"><i class="fa fa-times"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- Ca Detail End -->
+
+
+
+
+  <!-- Back to Top -->
+  <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+  <!-- JavaScript Libraries -->
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="../https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+  <script src="../lib/easing/easing.min.js"></script>
+  <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+
+  <!-- Contact Javascript File -->
+  <script src="../../mail/jqBootstrapValidation.min.js"></script>
+  <script src="../../mail/contact.js"></script>
+
+  <!-- Template Javascript -->
+  <script src="../../js/main.js"></script>
+</body>
+
+</html>
